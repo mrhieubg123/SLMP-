@@ -1,0 +1,39 @@
+{
+  "config": {
+    "oracle_user": "pthnew",
+    "oracle_password": "123456",
+    "oracle_dsn": "localhost:1521/orclpdb",
+    "string_connect": "DRIVER={SQL Server}; SERVER=localhost,3000/V3241419-SV; DATABASE=machine_b06; UID=sa; PWD=Foxconn168!!",
+    "table_name1": "FATP_MACHINE_DATA",
+    "table_name2": "FATP_MACHINE_DATA_CONNECT",
+    "table_name3": "FATP_MACHINE_FPY_DATA",
+    "fpy_reset_times": [
+      "07:30",
+      "19:30"
+    ],
+    "table3_poll_seconds": 120,
+    "manual_reset_password": "17022002",
+    "reset_verify_timeout_seconds": 120,
+    "reset_retry_seconds": 2,
+    "poll_interval_sec": 0.5,
+    "debounce_polls": 2,
+    "reconnect_minutes": 2,
+    "cut_clear_debounce": 4,
+    "WAIT_ON_HOLD_SECS": 30,
+    "poll_seconds1": 1200,
+    "license_key": "PTH-LOCK-HAI",
+    "api_verify_ssl": false,
+    "oracle_enabled": true,
+    "sql_enabled": true,
+    "api_enabled": true,
+    "api_record_url": "https://10.224.222.195:1001/ws-sync-data/api/postMachineErrorRecord",
+    "api_current_state_url": "https://10.224.222.195:1001/ws-sync-data/api/postMachineStatus",
+    "api_summary_url": "https://10.224.222.195:1001/ws-sync-data/api/postMachineSummary",
+    "api_timeout_seconds": 10,
+    "api_current_state_send_seconds": 1,
+    "api_headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  },
+  "timestop": {}
+}

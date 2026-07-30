@@ -1,0 +1,52 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# PyInstaller output
+build/
+dist/
+*.exe
+
+# Runtime logs and temporary files
+logs/
+*.log
+log_*.txt
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Local runtime configuration (contains database credentials)
+.env
+.env.*
+!.env.example
+
+# Local databases and process files
+*.db
+*.sqlite
+*.sqlite3
+*.pid
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Codex/agent local state
+.agents/
+.codex/
