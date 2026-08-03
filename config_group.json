@@ -3,677 +3,801 @@
     "L000000": "Đổi Ca"
   },
   "XY Machine": {
-    "E0036": {
-      "error": "[H7000] Alarm trục",
-      "bit": "M7000"
-    },
-    "E0037": {
-      "error": "[H7001] Alarm trục 1",
+    "XYZR01-X001": {
+      "error": "X-Axis Lane 1 Alarm",
       "bit": "M7001"
     },
-    "E0038": {
-      "error": "[H7002] Alarm trục 2",
+    "XYZR01-Y001": {
+      "error": "Y-Axis Lane 1 Alarm",
       "bit": "M7002"
     },
-    "E0039": {
-      "error": "[H7003] Alarm trục 3",
+    "XYZR01-Z001": {
+      "error": "Z-Axis Lane 1 Alarm",
       "bit": "M7003"
     },
-    "E0040": {
-      "error": "[H7004] Alarm trục 4",
+    "XYZR01-R001": {
+      "error": "R-Axis Lane 1 Alarm",
       "bit": "M7004"
     },
-    "E0041": {
-      "error": "[H7005] Alarm trục 5",
+    "XYZR01-M001": {
+      "error": "M-Axis Lane 1 Alarm",
       "bit": "M7005"
     },
-    "E0042": {
-      "error": "[H7006] Alarm trục 6",
+    "XYZR01-N001": {
+      "error": "N-Axis Lane 1 Alarm",
       "bit": "M7006"
     },
-    "E0043": {
-      "error": "[H7007] Alarm trục 7",
+    "XYZR02-X001": {
+      "error": "X-Axis Lane 2 Alarm",
       "bit": "M7007"
     },
-    "E0044": {
-      "error": "[H7008] Alarm trục 8",
+    "XYZR02-Y001": {
+      "error": "Y-Axis Lane 2 Alarm",
       "bit": "M7008"
     },
-    "E0045": {
-      "error": "[H7009] Alarm trục 9",
+    "XYZR02-Z001": {
+      "error": "Z-Axis Lane 2 Alarm",
       "bit": "M7009"
     },
-    "E0046": {
-      "error": "[H7010] Alarm trục 10",
+    "XYZR02-R001": {
+      "error": "R-Axis Lane 2 Alarm",
       "bit": "M7010"
     },
-    "E0047": {
-      "error": "[H7011] Alarm trục 11",
+    "XYZR02-M001": {
+      "error": "M-Axis Lane 2 Alarm",
       "bit": "M7011"
     },
-    "E0048": {
-      "error": "[H7012] Alarm trục 12",
+    "XYZR02-N001": {
+      "error": "N-Axis Lane 2 Alarm",
       "bit": "M7012"
     },
-    "E0049": {
-      "error": "[C7016] Cảnh báo an toàn 0",
+    "H7015": {
+      "error": "Emergency Stop Active",
+      "bit": "M7015"
+    },
+    "C7016": {
+      "error": "Safety Alarm 0",
       "bit": "M7016"
     },
-    "E0050": {
-      "error": "[C7017] Cảnh báo an toàn 1",
+    "C7017": {
+      "error": "Safety Alarm 1",
       "bit": "M7017"
     },
-    "E0051": {
-      "error": "[C7018] Cảnh báo an toàn 2",
+    "C7018": {
+      "error": "Safety Alarm 2",
       "bit": "M7018"
     },
-    "E0052": {
-      "error": "[C7019] Cảnh báo an toàn 3",
+    "C7019": {
+      "error": "Safety Alarm 3",
       "bit": "M7019"
     },
-    "E10187": {
-      "error": "Cửa mở",
-      "bit": "L5690"
+    "C7020": {
+      "error": "Material Alarm 0",
+      "bit": "M7020"
     },
-    "E10188": {
-      "error": "Cửa phụ mở",
-      "bit": "L5691"
+    "C7021": {
+      "error": "Material Lane 1 Alarm 1",
+      "bit": "M7021"
     },
-    "E10189": {
-      "error": "Cửa khoang 1 mở",
-      "bit": "L5692"
+    "C7022": {
+      "error": "Material Lane 1 Alarm 2",
+      "bit": "M7022"
     },
-    "E10190": {
-      "error": "Cửa khoang 2 mở",
-      "bit": "L5693"
+    "C7023": {
+      "error": "Material Lane 2 Alarm 3",
+      "bit": "M7023"
     },
-    "E10191": {
-      "error": "Cửa khoang 3 mở",
-      "bit": "L5694"
+    "C7024": {
+      "error": "Material Lane 2 Alarm 4",
+      "bit": "M7024"
     },
-    "E10192": {
-      "error": "Cửa khoang 4 mở",
-      "bit": "L5695"
+    "DOR01-D01": {
+      "error": "Door Lane 1 Open",
+      "bit": "M7025"
     },
-    "E10193": {
-      "error": "Cửa khoang 5 mở",
-      "bit": "L5696"
-    },
-    "E10194": {
-      "error": "Cửa khoang 6 mở",
-      "bit": "L5697"
-    },
-    "E10195": {
-      "error": "Cửa khoang 7 mở",
-      "bit": "L5698"
-    },
-    "E10196": {
-      "error": "Cửa khoang 8 mở",
-      "bit": "L5699"
-    },
-    "E10197": {
-      "error": "Cửa khoang 9 mở",
-      "bit": "L5700"
-    },
-    "E10198": {
-      "error": "Cửa khoang 10 mở",
-      "bit": "L5701"
-    },
-    "E0059": {
-      "error": "[L7026] Đang bật chế độ thủ công",
-      "bit": "M7026"
-    },
-    "E0060": {
-      "error": "[L7027] Bất thường về gốc 1",
+    "L7027": {
+      "error": "Home Position Lane 1 Error",
       "bit": "M7027"
     },
-    "E0061": {
-      "error": "[L7028] Bất thường về gốc 2",
-      "bit": "M7028"
-    },
-    "E0062": {
-      "error": "[L7029] Lỗi kết nối PLC-máy tính",
-      "bit": "M7029"
-    },
-    "E0063": {
-      "error": "[L7030] Bất thường băng tải 11",
+    "SER01-SR00": {
+      "error": "BT11 can not detect object",
       "bit": "M7030"
     },
-    "E0064": {
-      "error": "[L7031] Bất thường băng tải 12",
+    "SER02-SR00": {
+      "error": "BT12 can not detect object",
       "bit": "M7031"
     },
-    "E0065": {
-      "error": "[L7032] Bất thường băng tải 13",
+    "SER03-SR00": {
+      "error": "BT13 can not detect object",
       "bit": "M7032"
     },
-    "E0066": {
-      "error": "[L7033] Bất thường băng tải 14",
+    "SER04-SR00": {
+      "error": "BT14 can not detect object",
       "bit": "M7033"
     },
-    "E0067": {
-      "error": "[L7034] Bất thường băng tải 21",
+    "SER05-SR00": {
+      "error": "BT21 can not detect object",
       "bit": "M7034"
     },
-    "E0068": {
-      "error": "[L7035] Bất thường băng tải 22",
+    "SER06-SR00": {
+      "error": "BT22 can not detect object",
       "bit": "M7035"
     },
-    "E0069": {
-      "error": "[L7036] Bất thường băng tải 23",
+    "SER07-SR00": {
+      "error": "BT23 can not detect object",
       "bit": "M7036"
     },
-    "E0070": {
-      "error": "[L7037] Bất thường băng tải 24",
+    "SER08-SR00": {
+      "error": "BT24 can not detect object",
       "bit": "M7037"
     },
-    "E0071": {
-      "error": "[L7038] Bất thường băng tải 31",
+    "SER09-SR00": {
+      "error": "BT31 can not detect object",
       "bit": "M7038"
     },
-    "E0072": {
-      "error": "[L7039] Bất thường băng tải 32",
+    "SER10-SR00": {
+      "error": "BT32 can not detect object",
       "bit": "M7039"
     },
-    "E0073": {
-      "error": "[L7040] Bất thường băng tải 33",
+    "SER11-SR00": {
+      "error": "BT33 can not detect object",
       "bit": "M7040"
     },
-    "E0074": {
-      "error": "[L7041] Bất thường băng tải 34",
+    "SER12-SR00": {
+      "error": "BT34 can not detect object",
       "bit": "M7041"
     },
-    "E0075": {
-      "error": "[L7042] Bất thường băng tải 41",
+    "SER13-SR00": {
+      "error": "BT41 can not detect object",
       "bit": "M7042"
     },
-    "E0076": {
-      "error": "[L7043] Bất thường băng tải 42",
+    "SER14-SR00": {
+      "error": "BT42 can not detect object",
       "bit": "M7043"
     },
-    "E0077": {
-      "error": "[L7044] Bất thường băng tải 43",
+    "SER15-SR00": {
+      "error": "BT43 can not detect object",
       "bit": "M7044"
     },
-    "E0078": {
-      "error": "[L7045] Bất thường băng tải 44",
+    "SER16-SR00": {
+      "error": "BT44 can not detect object",
       "bit": "M7045"
     },
-    "E0079": {
-      "error": "[L7042] Bất thường băng tải 51",
+    "SER17-SR00": {
+      "error": "BT51 can not detect object",
       "bit": "M7046"
     },
-    "E0080": {
-      "error": "[L7043] Bất thường băng tải 52",
+    "SER18-SR00": {
+      "error": "BT52 can not detect object",
       "bit": "M7047"
     },
-    "E0081": {
-      "error": "[L7044] Bất thường băng tải 53",
+    "SER19-SR00": {
+      "error": "BT53 can not detect object",
       "bit": "M7048"
     },
-    "E0082": {
-      "error": "[L7045] Bất thường băng tải 54",
+    "SER20-SR00": {
+      "error": "BT54 can not detect object",
       "bit": "M7049"
     },
-    "E0083": {
-      "error": "[L7050] Bất thường băng tải 61",
+    "SER21-SR00": {
+      "error": "BT61 can not detect object",
       "bit": "M7050"
     },
-    "E0084": {
-      "error": "[L7051] Bất thường băng tải 62",
+    "SER22-SR00": {
+      "error": "BT62 can not detect object",
       "bit": "M7051"
     },
-    "E0085": {
-      "error": "[L7052] Bất thường băng tải 63",
+    "SER23-SR00": {
+      "error": "BT63 can not detect object",
       "bit": "M7052"
     },
-    "E0086": {
-      "error": "[L7053] Bất thường băng tải 64",
+    "SER24-SR00": {
+      "error": "BT64 can not detect object",
       "bit": "M7053"
     },
-    "E0087": {
-      "error": "[L7054] Lấy bản Fail băng tải...",
+    "L7054": {
+      "error": "Conveyor 12 Panel Lane 1 Pick Error",
       "bit": "M7054"
     },
-    "E0088": {
-      "error": "[L7055] Lấy bản Fail băng tải…",
+    "L7055": {
+      "error": "Conveyor 22 Panel Lane 2 Pick Error",
       "bit": "M7055"
     },
-    "E0089": {
-      "error": "[L7056] Lấy bản Fail băng tải…",
-      "bit": "M7056"
-    },
-    "E0090": {
-      "error": "[L7057] Lấy bản Fail băng tải…",
-      "bit": "M7057"
-    },
-    "E0091": {
-      "error": "[L7058] Lấy bản Fail băng tải…",
+    "L7058": {
+      "error": "Gripper Workpiece Lane 1 Check Error",
       "bit": "M7058"
     },
-    "E0092": {
-      "error": "[L7059] Lấy bản Fail băng tải…",
+    "L7059": {
+      "error": "Gripper Workpiece Lane 2 Check Error",
       "bit": "M7059"
     },
-    "E0093": {
-      "error": "[L7060] Bất thường xi-lanh 0",
+    "CYL01-CY01": {
+      "error": "Lift Cylinder 1 Lane 1 Extended Position Error",
       "bit": "M7060"
     },
-    "E0094": {
-      "error": "[L7061] Bất thường xi-lanh 1",
+    "CYL01-CY02": {
+      "error": "Lift Cylinder 1 Lane 1 Retracted Position Error",
       "bit": "M7061"
     },
-    "E0095": {
-      "error": "[L7062] Bất thường xi-lanh 2",
+    "CYL02-CY01": {
+      "error": "Lift Cylinder 2 Lane 1 Extended Position Error",
       "bit": "M7062"
     },
-    "E0096": {
-      "error": "[L7063] Bất thường xi-lanh 3",
+    "CYL02-CY02": {
+      "error": "Lift Cylinder 2 Lane 1 Retracted Position Error",
       "bit": "M7063"
     },
-    "E0097": {
-      "error": "[L7064] Bất thường xi-lanh 4",
+    "CYL03-CY01": {
+      "error": "Lift Cylinder 3 Lane 1 Extended Position Error",
       "bit": "M7064"
     },
-    "E0098": {
-      "error": "[L7065] Bất thường xi-lanh 5",
+    "CYL03-CY02": {
+      "error": "Lift Cylinder 3 Lane 1 Retracted Position Error",
       "bit": "M7065"
     },
-    "E0099": {
-      "error": "[L7066] Bất thường xi-lanh 6",
+    "CYL04-CY01": {
+      "error": "BTF Lift Cylinder Lane 1 Extended Position Error",
       "bit": "M7066"
     },
-    "E0100": {
-      "error": "[L7067] Bất thường xi-lanh 7",
+    "CYL04-CY02": {
+      "error": "BTF Lift Cylinder Lane 1 Retracted Position Error",
       "bit": "M7067"
     },
-    "E0101": {
-      "error": "[L7068] Bất thường xi-lanh 8",
+    "CYL05-CY01": {
+      "error": "Tray Pusher Cylinder Lane 1 Extended Position Error",
       "bit": "M7068"
     },
-    "E0102": {
-      "error": "[L7069] Bất thường xi-lanh 9",
+    "CYL05-CY02": {
+      "error": "Tray Pusher Cylinder Lane 1 Retracted Position Error",
       "bit": "M7069"
     },
-    "E0103": {
-      "error": "[L7070] Bất thường xi-lanh 10",
+    "CYL06-CY01": {
+      "error": "Lift Cylinder 1 Lane 2 Extended Position Error",
       "bit": "M7070"
     },
-    "E0104": {
-      "error": "[L7071] Bất thường xi-lanh 11",
+    "CYL06-CY02": {
+      "error": "Lift Cylinder 1 Lane 2 Retracted Position Error",
       "bit": "M7071"
     },
-    "E0105": {
-      "error": "[L7072] Bất thường xi-lanh 12",
+    "CYL07-CY01": {
+      "error": "Lift Cylinder 2 Lane 2 Extended Position Error",
       "bit": "M7072"
     },
-    "E0106": {
-      "error": "[L7073] Bất thường xi-lanh 13",
+    "CYL07-CY02": {
+      "error": "Lift Cylinder 2 Lane 2 Retracted Position Error",
       "bit": "M7073"
     },
-    "E0107": {
-      "error": "[L7074] Bất thường xi-lanh 14",
+    "CYL08-CY01": {
+      "error": "Lift Cylinder 3 Lane 2 Extended Position Error",
       "bit": "M7074"
     },
-    "E0108": {
-      "error": "[L7075] Bất thường xi-lanh 15",
+    "CYL08-CY02": {
+      "error": "Lift Cylinder 3 Lane 2 Retracted Position Error",
       "bit": "M7075"
     },
-    "E0109": {
-      "error": "[L7076] Bất thường xi-lanh 16",
+    "CYL09-CY01": {
+      "error": "BTF Lift Cylinder Lane 2 Extended Position Error",
       "bit": "M7076"
     },
-    "E0110": {
-      "error": "[L7077] Bất thường xi-lanh 17",
+    "CYL09-CY02": {
+      "error": "BTF Lift Cylinder Lane 2 Retracted Position Error",
       "bit": "M7077"
     },
-    "E0111": {
-      "error": "[L7078] Bất thường xi-lanh 18",
+    "CYL10-CY01": {
+      "error": "Tray Pusher Cylinder Lane 2 Extended Position Error",
       "bit": "M7078"
     },
-    "E0112": {
-      "error": "[L7079] Bất thường xi-lanh 19",
+    "CYL10-CY02": {
+      "error": "Tray Pusher Cylinder Lane 2 Retracted Position Error",
       "bit": "M7079"
     },
-    "E0113": {
-      "error": "[L7080] Bất thường xi-lanh 20",
+    "CAMS01-C003": {
+      "error": "Camera SFC lane 1 can not detect object",
       "bit": "M7080"
     },
-    "E0114": {
-      "error": "[L7081] Bất thường xi-lanh 21",
+    "CAMS01-C007": {
+      "error": "Camera SFC lane 1 AOI QR Code Fail",
       "bit": "M7081"
     },
-    "E0115": {
-      "error": "[L7082] Bất thường xi-lanh 22",
+    "CAMS01-C008": {
+      "error": "Camera SFC lane 1 Wrong station",
       "bit": "M7082"
     },
-    "E0116": {
-      "error": "[L7083] Bất thường xi-lanh 23",
+    "CAMS01-C009": {
+      "error": "Camera SFC lane 1 Material not link",
       "bit": "M7083"
     },
-    "E0117": {
-      "error": "[L7084] Bất thường xi-lanh 24",
+    "CAMS01-C010": {
+      "error": "SFC lane 1 Disconnect",
       "bit": "M7084"
     },
-    "E0118": {
-      "error": "[L7085] Bất thường xi-lanh 25",
+    "CAMS01-C011": {
+      "error": "Camera SFC lane 1 ultrasonic out spec",
       "bit": "M7085"
     },
-    "E0119": {
-      "error": "[L7086] Bất thường xi-lanh 26",
+    "CAMS01-C012": {
+      "error": "Camera SFC lane 1 ultrasonic disconnect",
       "bit": "M7086"
     },
-    "E0120": {
-      "error": "[L7087] Bất thường xi-lanh 27",
+    "CAMS01-C013": {
+      "error": "Camera SFC lane 1 RB place misalignment",
       "bit": "M7087"
     },
-    "E0121": {
-      "error": "[L7088] Bất thường xi-lanh 28",
-      "bit": "M7088"
-    },
-    "E0122": {
-      "error": "[L7089] Bất thường xi-lanh 29",
-      "bit": "M7089"
-    },
-    "E0123": {
-      "error": "[L7090] Lỗi camera dưới làn 1",
-      "bit": "M7090"
-    },
-    "E0124": {
-      "error": "[L7091] Lỗi camera trên làn 1",
-      "bit": "M7091"
-    },
-    "E0125": {
-      "error": "[L7092] Lỗi camera dưới làn 2",
-      "bit": "M7092"
-    },
-    "E0126": {
-      "error": "[L7093] Lỗi camera trên làn 2",
-      "bit": "M7093"
-    },
-    "E0127": {
-      "error": "[L7094] Lỗi camera 4",
+    "CAMB01-C001": {
+      "error": "Timeout camera Bot lane 1",
       "bit": "M7094"
     },
-    "E0128": {
-      "error": "[L7095] Timeout camera dưới làn 1",
+    "CAMB01-C002": {
+      "error": "Camera Bot lane 1 AOI material fail",
       "bit": "M7095"
     },
-    "E0129": {
-      "error": "[L7096] Timeout camera trên làn 1",
+    "CAMB01-C003": {
+      "error": "Camera Bot lane 1 can not detect object",
       "bit": "M7096"
     },
-    "E0130": {
-      "error": "[L7097] Timeout camera dưới làn 2",
+    "CAMB02-C001": {
+      "error": "Timeout camera Bot lane 2",
       "bit": "M7097"
     },
-    "E0131": {
-      "error": "[L7098] Timeout camera trên làn 2",
+    "CAMB02-C002": {
+      "error": "Camera Bot lane 2 AOI material fail",
       "bit": "M7098"
     },
-    "E0132": {
-      "error": "[L7099] Timeout camera 4",
+    "CAMB02-C003": {
+      "error": "Camera Bot lane 2 can not detect object",
       "bit": "M7099"
     },
-    "E0133": {
-      "error": "[L7100] Gắp lỗi tay 0",
-      "bit": "M7100"
-    },
-    "E0134": {
-      "error": "[L7101] Gắp lỗi tay 1",
+    "PNP01-PP01": {
+      "error": "Hand 1 lane 1 Pick up error",
       "bit": "M7101"
     },
-    "E0135": {
-      "error": "[L7102] Gắp lỗi tay 2",
+    "PNP02-PP01": {
+      "error": "Hand 2 lane 1 Pick up error",
       "bit": "M7102"
     },
-    "E0136": {
-      "error": "[L7103] Gắp lỗi tay 3",
+    "PNP03-PP01": {
+      "error": "Hand 1 lane 2 Pick up error",
       "bit": "M7103"
     },
-    "E0137": {
-      "error": "[L7104] Gắp lỗi tay 4",
+    "PNP04-PP01": {
+      "error": "Hand 2 lane 2 Pick up error",
       "bit": "M7104"
     },
-    "E0138": {
-      "error": "[L7105] Rơi liệu tay 0 ",
-      "bit": "M7105"
-    },
-    "E0139": {
-      "error": "[L7106] Rơi liệu tay 1 ",
+    "PNP01-PP02": {
+      "error": "Hand 1 lane 1 Drop material",
       "bit": "M7106"
     },
-    "E0140": {
-      "error": "[L7107] Rơi liệu tay 2 ",
+    "PNP02-PP02": {
+      "error": "Hand 2 lane 1 Drop material",
       "bit": "M7107"
     },
-    "E0141": {
-      "error": "[L7108] Rơi liệu tay 3 ",
+    "PNP03-PP02": {
+      "error": "Hand 1 lane 2 Drop material",
       "bit": "M7108"
     },
-    "E0142": {
-      "error": "[L7109] Rơi liệu tay 4 ",
+    "PNP04-PP02": {
+      "error": "Hand 2 lane 2 Drop material",
       "bit": "M7109"
     },
-    "E0143": {
-      "error": "[L7110] Lỗi dán liệu tay 0",
-      "bit": "M7110"
-    },
-    "E0144": {
-      "error": "[L7111] Lỗi dán liệu tay 1",
+    "PNP01-PP03": {
+      "error": "Hand 1 lane 1 place error",
       "bit": "M7111"
     },
-    "E0145": {
-      "error": "[L7112] Lỗi dán liệu tay 2",
+    "PNP02-PP03": {
+      "error": "Hand 2 lane 1 place error",
       "bit": "M7112"
     },
-    "E0146": {
-      "error": "[L7113] Lỗi dán liệu tay 3",
+    "PNP03-PP03": {
+      "error": "Hand 1 lane 2 place error",
       "bit": "M7113"
     },
-    "E0147": {
-      "error": "[L7114] Lỗi dán liệu tay 4",
+    "PNP04-PP03": {
+      "error": "Hand 2 lane 2 place error",
       "bit": "M7114"
     },
-    "E0148": {
-      "error": "[L7115] Lỗi dán liệu …",
+    "CAMT01-C001": {
+      "error": "Timeout camera Top lane 1",
       "bit": "M7115"
     },
-    "E0149": {
-      "error": "[L7116] Lỗi dán liệu …",
+    "CAMT01-C003": {
+      "error": "Camera Top lane 1 can not detect object",
       "bit": "M7116"
     },
-    "E0150": {
-      "error": "[L7117] Lỗi dán liệu …",
+    "CAMT01-C004": {
+      "error": "Camera Top lane 1 can not scan QR on tray",
       "bit": "M7117"
     },
-    "E0151": {
-      "error": "[L7118] Lỗi dán liệu …",
+    "CAMT01-C005": {
+      "error": "Camera Top lane 1 AOI material missing",
       "bit": "M7118"
     },
-    "E0152": {
-      "error": "[L7119] Lỗi dán liệu …",
+    "CAMT01-C006": {
+      "error": "Camera Top lane 1 AOI material misalignment",
       "bit": "M7119"
     },
-    "E0153": {
-      "error": "[L7120] Lỗi bắn vít 0",
+    "CAMT01-C007": {
+      "error": "Camera Top lane 1 AOI QR Code Fail",
       "bit": "M7120"
     },
-    "E0154": {
-      "error": "[L7121] Lỗi bắn vít 1",
+    "CAMT02-C001": {
+      "error": "Timeout camera Top lane 2",
       "bit": "M7121"
     },
-    "E0155": {
-      "error": "[L7122] Lỗi bắn vít 2",
+    "CAMT02-C003": {
+      "error": "Camera Top lane 2 can not detect object",
       "bit": "M7122"
     },
-    "E0156": {
-      "error": "[L7123] Lỗi bắn vít 3",
+    "CAMT02-C004": {
+      "error": "Camera Top lane 2 can not scan QR on tray",
       "bit": "M7123"
     },
-    "E0157": {
-      "error": "[L7124] Lỗi bắn vít 4",
+    "CAMT02-C005": {
+      "error": "Camera Top lane 2 AOI material missing",
       "bit": "M7124"
     },
-    "E0158": {
-      "error": "[L7125] Lỗi bắn vít 5",
+    "CAMT02-C006": {
+      "error": "Camera Top lane 2 AOI material misalignment",
       "bit": "M7125"
     },
-    "E0159": {
-      "error": "[L7126] Lỗi bắn vít 6",
+    "CAMT02-C007": {
+      "error": "Camera Top lane 2 AOI QR Code Fail",
       "bit": "M7126"
     },
-    "E0160": {
-      "error": "[L7127] Lỗi bắn vít 7",
+    "L7127": {
+      "error": "Home Position Lane 2 Error",
       "bit": "M7127"
     },
-    "E0161": {
-      "error": "[L7128] Lỗi bắn vít 8",
-      "bit": "M7128"
-    },
-    "E0162": {
-      "error": "[L7129] Lỗi bắn vít 9",
-      "bit": "M7129"
-    },
-    "E0163": {
-      "error": "[L7130] Lỗi cảm biến 0",
+    "CAMS02-C003": {
+      "error": "Camera SFC lane 2 can not detect object",
       "bit": "M7130"
     },
-    "E0164": {
-      "error": "[L7131] Lỗi cảm biến 1",
+    "CAMS02-C007": {
+      "error": "Camera SFC lane 2 AOI QR Code Fail",
       "bit": "M7131"
     },
-    "E0165": {
-      "error": "[L7132] Lỗi cảm biến 2",
+    "CAMS02-C008": {
+      "error": "Camera SFC lane 2 Wrong station",
       "bit": "M7132"
     },
-    "E0166": {
-      "error": "[L7133] Lỗi cảm biến 3",
+    "CAMS02-C009": {
+      "error": "Camera SFC lane 2 Material not link",
       "bit": "M7133"
     },
-    "E0167": {
-      "error": "[L7134] Lỗi cảm biến 4",
+    "CAMS02-C010": {
+      "error": "SFC lane 2 Disconnect",
       "bit": "M7134"
     },
-    "E0168": {
-      "error": "[L7135] Lỗi cảm biến 5",
+    "CAMS02-C011": {
+      "error": "Camera SFC lane 2 ultrasonic out spec",
       "bit": "M7135"
     },
-    "E0169": {
-      "error": "[L7136] Lỗi cảm biến 6",
+    "CAMS02-C012": {
+      "error": "Camera SFC lane 2 ultrasonic disconnect",
       "bit": "M7136"
     },
-    "E0170": {
-      "error": "[L7137] Lỗi cảm biến 7",
+    "CAMS02-C013": {
+      "error": "Camera SFC lane 2 RB place misalignment",
       "bit": "M7137"
     },
-    "E0171": {
-      "error": "[L7138] Lỗi cảm biến 8",
-      "bit": "M7138"
-    },
-    "E0172": {
-      "error": "[L7139] Lỗi cảm biến 9",
-      "bit": "M7139"
-    },
-    "E0173": {
-      "error": "[L7140] Feeder 0 error !",
+    "L7140": {
+      "error": "Feeder 0 error",
       "bit": "M7140"
     },
-    "E0174": {
-      "error": "[L7141] Feeder 1 error !",
+    "L7141": {
+      "error": "Feeder 1 lane 1 error",
       "bit": "M7141"
     },
-    "E0175": {
-      "error": "[L7142] Feeder 2 error !",
+    "L7142": {
+      "error": "Feeder 2 lane 1 error",
       "bit": "M7142"
     },
-    "E0176": {
-      "error": "[L7143] Feeder 3 error !",
+    "L7143": {
+      "error": "Feeder 3 lane 2 error",
       "bit": "M7143"
     },
-    "E0177": {
-      "error": "[L7144] Feeder 4 error !",
+    "L7144": {
+      "error": "Feeder 4 lane 2 error",
       "bit": "M7144"
     },
-    "E0178": {
-      "error": "[L7145] Feeder 0 timeout",
+    "L7145": {
+      "error": "Feeder 0 timeout",
       "bit": "M7145"
     },
-    "E0179": {
-      "error": "[L7146] Feeder 1 timeout",
+    "L7146": {
+      "error": "Feeder 1 lane 1 timeout",
       "bit": "M7146"
     },
-    "E0180": {
-      "error": "[L7147] Feeder 2 timeout",
+    "L7147": {
+      "error": "Feeder 2 lane 1 timeout",
       "bit": "M7147"
     },
-    "E0181": {
-      "error": "[L7148] Feeder 3 timeout",
+    "L7148": {
+      "error": "Feeder 3 lane 2 timeout",
       "bit": "M7148"
     },
-    "E0182": {
-      "error": "[L7149] Feeder 4 timeout",
+    "L7149": {
+      "error": "Feeder 4 lane 2 timeout",
       "bit": "M7149"
     },
-    "E0183": {
-      "error": "[L7150] Kiểm tra Fixture 0",
+    "L7150": {
+      "error": "Fixture 0 Check Error",
       "bit": "M7150"
     },
-    "E0184": {
-      "error": "[L7151] Kiểm tra Fixture 1",
+    "L7151": {
+      "error": "Fixture 1 Check Error",
       "bit": "M7151"
     },
-    "E0185": {
-      "error": "[L7152] Kiểm tra Fixture 2",
+    "L7152": {
+      "error": "Fixture 2 Check Error",
       "bit": "M7152"
     },
-    "E0186": {
-      "error": "[L7153] Kiểm tra Fixture 3",
+    "L7153": {
+      "error": "Fixture 3 Check Error",
       "bit": "M7153"
     },
-    "E0187": {
-      "error": "[L7154] Kiểm tra Fixture 4",
+    "L7154": {
+      "error": "Fixture 4 Check Error",
       "bit": "M7154"
     },
-    "E0188": {
-      "error": "[L7155] Fixture 0 timeout",
+    "L7155": {
+      "error": "Fixture 0 timeout !",
       "bit": "M7155"
     },
-    "E0189": {
-      "error": "[L7156] Fixture 1 timeout",
+    "L7156": {
+      "error": "Fixture 1 timeout !",
       "bit": "M7156"
     },
-    "E0190": {
-      "error": "[L7157] Fixture 2 timeout",
+    "L7157": {
+      "error": "Fixture 2 timeout !",
       "bit": "M7157"
     },
-    "E0191": {
-      "error": "[L7158] Fixture 3 timeout",
+    "L7158": {
+      "error": "Fixture 3 timeout !",
       "bit": "M7158"
     },
-    "E0192": {
-      "error": "[L7159] Fixture 4 timeout",
+    "L7159": {
+      "error": "Fixture 4 timeout !",
       "bit": "M7159"
     },
-    "E0193": {
-      "error": "[L7160] Kiểm tra tay gắp 0",
+    "L7160": {
+      "error": "Gripper 0 Check Error",
       "bit": "M7160"
     },
-    "E0194": {
-      "error": "[L7161] Kiểm tra tay gắp 1",
+    "L7161": {
+      "error": "Gripper 1 Lane 1 Check Error",
       "bit": "M7161"
     },
-    "E0195": {
-      "error": "[L7162] Kiểm tra tay gắp 2",
+    "L7162": {
+      "error": "Gripper 2 Lane 1 Check Error",
       "bit": "M7162"
     },
-    "E0196": {
-      "error": "[L7163] Kiểm tra tay gắp 3",
+    "L7163": {
+      "error": "Gripper 1 Lane 2 Check Error",
       "bit": "M7163"
     },
-    "E0197": {
-      "error": "[L7164] Kiểm tra tay gắp 4",
+    "L7164": {
+      "error": "Gripper 2 Lane 2 Check Error",
       "bit": "M7164"
+    },
+    "CAMS01-C001": {
+      "error": "Timeout camera SFC lane 1",
+      "bit": "M7170"
+    },
+    "PNP05-PP01": {
+      "error": "Hand 3 lane 1 pick up error",
+      "bit": "M7171"
+    },
+    "CAMS02-C001": {
+      "error": "Timeout camera SFC lane 2",
+      "bit": "M7172"
+    },
+    "PNP06-PP01": {
+      "error": "Hand 3 lane 2 pick up error",
+      "bit": "M7173"
+    },
+    "DOR02-D01": {
+      "error": "Door Open lane 2",
+      "bit": "M7174"
+    },
+    "L7165": {
+      "error": "Camera SFC 1 lane 1 error",
+      "bit": "M7165"
+    },
+    "L7166": {
+      "error": "Camera SFC 2 lane 1 error",
+      "bit": "M7166"
+    },
+    "L7167": {
+      "error": "Camera SFC 1 lane 2 error",
+      "bit": "M7167"
+    },
+    "L7168": {
+      "error": "Camera SFC 2 lane 2 error",
+      "bit": "M7168"
+    },
+    "L7090": {
+      "error": "Camera BOT lane 1 error",
+      "bit": "M7090"
+    },
+    "L7091": {
+      "error": "Camera TOP lane 1 error",
+      "bit": "M7091"
+    },
+    "L7092": {
+      "error": "Camera Bot lane 2 error",
+      "bit": "M7092"
+    },
+    "L7093": {
+      "error": "Camera Top lane 2 error",
+      "bit": "M7093"
+    },
+    "L7180": {
+      "error": "FB_err 0(Servo_)",
+      "bit": "M7180"
+    },
+    "L7181": {
+      "error": "FB_err 1(Table_1)",
+      "bit": "M7181"
+    },
+    "L7182": {
+      "error": "FB_err 2(Table_2)",
+      "bit": "M7182"
+    },
+    "L7183": {
+      "error": "FB_err 3(Total_)",
+      "bit": "M7183"
+    },
+    "L7184": {
+      "error": "FB_err 4(Socket_)",
+      "bit": "M7184"
+    },
+    "L7186": {
+      "error": "FB_err 6",
+      "bit": "M7186"
+    },
+    "L7187": {
+      "error": "FB_err 7",
+      "bit": "M7187"
+    },
+    "L7188": {
+      "error": "FB_err 8",
+      "bit": "M7188"
+    },
+    "L7189": {
+      "error": "FB_err 9",
+      "bit": "M7189"
+    },
+    "L7190": {
+      "error": "FB_err 10(Servo2_)",
+      "bit": "M7190"
+    },
+    "L7191": {
+      "error": "FB_err 11(Table_3)",
+      "bit": "M7191"
+    },
+    "L7192": {
+      "error": "FB_err 12(Table_4)",
+      "bit": "M7192"
+    },
+    "L7193": {
+      "error": "FB_err 13",
+      "bit": "M7193"
+    },
+    "L7194": {
+      "error": "FB_err 14",
+      "bit": "M7194"
+    },
+    "L7196": {
+      "error": "FB_err 16",
+      "bit": "M7196"
+    },
+    "L7197": {
+      "error": "FB_err 17",
+      "bit": "M7197"
+    },
+    "L7198": {
+      "error": "FB_err 18",
+      "bit": "M7198"
+    },
+    "L7199": {
+      "error": "FB_err 19",
+      "bit": "M7199"
+    },
+    "XYZR01-X002": {
+      "error": "X-Axis Lane 1 Positive Limit",
+      "bit": "SM5660"
+    },
+    "XYZR01-Y002": {
+      "error": "Y-Axis Lane 1 Positive Limit",
+      "bit": "SM5661"
+    },
+    "XYZR01-Z002": {
+      "error": "Z-Axis Lane 1 Positive Limit",
+      "bit": "SM5662"
+    },
+    "XYZR01-R002": {
+      "error": "R-Axis Lane 1 Positive Limit",
+      "bit": "SM5663"
+    },
+    "XYZR01-M002": {
+      "error": "M-Axis Lane 1 Positive Limit",
+      "bit": "SM5664"
+    },
+    "XYZR01-N002": {
+      "error": "N-Axis Lane 1 Positive Limit",
+      "bit": "SM5665"
+    },
+    "XYZR02-X002": {
+      "error": "X-Axis Lane 2 Positive Limit",
+      "bit": "SM5666"
+    },
+    "XYZR02-Y002": {
+      "error": "Y-Axis Lane 2 Positive Limit",
+      "bit": "SM5667"
+    },
+    "XYZR02-Z002": {
+      "error": "Z-Axis Lane 2 Positive Limit",
+      "bit": "SM5668"
+    },
+    "XYZR02-R002": {
+      "error": "R-Axis Lane 2 Positive Limit",
+      "bit": "SM5669"
+    },
+    "XYZR02-M002": {
+      "error": "M-Axis Lane 2 Positive Limit",
+      "bit": "SM5670"
+    },
+    "XYZR02-N002": {
+      "error": "N-Axis Lane 2 Positive Limit",
+      "bit": "SM5671"
+    },
+    "XYZR01-X003": {
+      "error": "X-Axis Lane 1 Negative Limit",
+      "bit": "SM5676"
+    },
+    "XYZR01-Y003": {
+      "error": "Y-Axis Lane 1 Negative Limit",
+      "bit": "SM5677"
+    },
+    "XYZR01-Z003": {
+      "error": "Z-Axis Lane 1 Negative Limit",
+      "bit": "SM5678"
+    },
+    "XYZR01-R003": {
+      "error": "R-Axis Lane 1 Negative Limit",
+      "bit": "SM5679"
+    },
+    "XYZR01-M003": {
+      "error": "M-Axis Lane 1 Negative Limit",
+      "bit": "SM5680"
+    },
+    "XYZR01-N003": {
+      "error": "N-Axis Lane 1 Negative Limit",
+      "bit": "SM5681"
+    },
+    "XYZR02-X003": {
+      "error": "X-Axis Lane 2 Negative Limit",
+      "bit": "SM5682"
+    },
+    "XYZR02-Y003": {
+      "error": "Y-Axis Lane 2 Negative Limit",
+      "bit": "SM5683"
+    },
+    "XYZR02-Z003": {
+      "error": "Z-Axis Lane 2 Negative Limit",
+      "bit": "SM5684"
+    },
+    "XYZR02-R003": {
+      "error": "R-Axis Lane 2 Negative Limit",
+      "bit": "SM5685"
+    },
+    "XYZR02-M003": {
+      "error": "M-Axis Lane 2 Negative Limit",
+      "bit": "SM5686"
+    },
+    "XYZR02-N003": {
+      "error": "N-Axis Lane 2 Negative Limit",
+      "bit": "SM5687"
     }
   }
 }
