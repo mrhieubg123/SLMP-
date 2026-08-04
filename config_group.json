@@ -2,7 +2,7 @@
   "LINE_OVERRIDE": {
     "L000000": "Đổi Ca"
   },
-  "XY Machine": {
+  "XYZ Machine": {
     "XYZR01-X001": {
       "error": "X-Axis Lane 1 Alarm",
       "bit": "M7001"
@@ -798,6 +798,680 @@
     "XYZR02-N003": {
       "error": "N-Axis Lane 2 Negative Limit",
       "bit": "SM5687"
+    }
+  },
+  "XY Machine": {
+    "E0036": {
+      "error": "[H7000] Alarm trục",
+      "bit": "M7000"
+    },
+    "E0037": {
+      "error": "[H7001] Alarm trục 1",
+      "bit": "M7001"
+    },
+    "E0038": {
+      "error": "[H7002] Alarm trục 2",
+      "bit": "M7002"
+    },
+    "E0039": {
+      "error": "[H7003] Alarm trục 3",
+      "bit": "M7003"
+    },
+    "E0040": {
+      "error": "[H7004] Alarm trục 4",
+      "bit": "M7004"
+    },
+    "E0041": {
+      "error": "[H7005] Alarm trục 5",
+      "bit": "M7005"
+    },
+    "E0042": {
+      "error": "[H7006] Alarm trục 6",
+      "bit": "M7006"
+    },
+    "E0043": {
+      "error": "[H7007] Alarm trục 7",
+      "bit": "M7007"
+    },
+    "E0044": {
+      "error": "[H7008] Alarm trục 8",
+      "bit": "M7008"
+    },
+    "E0045": {
+      "error": "[H7009] Alarm trục 9",
+      "bit": "M7009"
+    },
+    "E0046": {
+      "error": "[H7010] Alarm trục 10",
+      "bit": "M7010"
+    },
+    "E0047": {
+      "error": "[H7011] Alarm trục 11",
+      "bit": "M7011"
+    },
+    "E0048": {
+      "error": "[H7012] Alarm trục 12",
+      "bit": "M7012"
+    },
+    "E0049": {
+      "error": "[C7016] Cảnh báo an toàn 0",
+      "bit": "M7016"
+    },
+    "E0050": {
+      "error": "[C7017] Cảnh báo an toàn 1",
+      "bit": "M7017"
+    },
+    "E0051": {
+      "error": "[C7018] Cảnh báo an toàn 2",
+      "bit": "M7018"
+    },
+    "E0052": {
+      "error": "[C7019] Cảnh báo an toàn 3",
+      "bit": "M7019"
+    },
+    "E10187": {
+      "error": "Cửa mở",
+      "bit": "L5690"
+    },
+    "E10188": {
+      "error": "Cửa phụ mở",
+      "bit": "L5691"
+    },
+    "E10189": {
+      "error": "Cửa khoang 1 mở",
+      "bit": "L5692"
+    },
+    "E10190": {
+      "error": "Cửa khoang 2 mở",
+      "bit": "L5693"
+    },
+    "E10191": {
+      "error": "Cửa khoang 3 mở",
+      "bit": "L5694"
+    },
+    "E10192": {
+      "error": "Cửa khoang 4 mở",
+      "bit": "L5695"
+    },
+    "E10193": {
+      "error": "Cửa khoang 5 mở",
+      "bit": "L5696"
+    },
+    "E10194": {
+      "error": "Cửa khoang 6 mở",
+      "bit": "L5697"
+    },
+    "E10195": {
+      "error": "Cửa khoang 7 mở",
+      "bit": "L5698"
+    },
+    "E10196": {
+      "error": "Cửa khoang 8 mở",
+      "bit": "L5699"
+    },
+    "E10197": {
+      "error": "Cửa khoang 9 mở",
+      "bit": "L5700"
+    },
+    "E10198": {
+      "error": "Cửa khoang 10 mở",
+      "bit": "L5701"
+    },
+    "E0059": {
+      "error": "[L7026] Đang bật chế độ thủ công",
+      "bit": "M7026"
+    },
+    "E0060": {
+      "error": "[L7027] Bất thường về gốc 1",
+      "bit": "M7027"
+    },
+    "E0061": {
+      "error": "[L7028] Bất thường về gốc 2",
+      "bit": "M7028"
+    },
+    "E0062": {
+      "error": "[L7029] Lỗi kết nối PLC-máy tính",
+      "bit": "M7029"
+    },
+    "E0063": {
+      "error": "[L7030] Bất thường băng tải 11",
+      "bit": "M7030"
+    },
+    "E0064": {
+      "error": "[L7031] Bất thường băng tải 12",
+      "bit": "M7031"
+    },
+    "E0065": {
+      "error": "[L7032] Bất thường băng tải 13",
+      "bit": "M7032"
+    },
+    "E0066": {
+      "error": "[L7033] Bất thường băng tải 14",
+      "bit": "M7033"
+    },
+    "E0067": {
+      "error": "[L7034] Bất thường băng tải 21",
+      "bit": "M7034"
+    },
+    "E0068": {
+      "error": "[L7035] Bất thường băng tải 22",
+      "bit": "M7035"
+    },
+    "E0069": {
+      "error": "[L7036] Bất thường băng tải 23",
+      "bit": "M7036"
+    },
+    "E0070": {
+      "error": "[L7037] Bất thường băng tải 24",
+      "bit": "M7037"
+    },
+    "E0071": {
+      "error": "[L7038] Bất thường băng tải 31",
+      "bit": "M7038"
+    },
+    "E0072": {
+      "error": "[L7039] Bất thường băng tải 32",
+      "bit": "M7039"
+    },
+    "E0073": {
+      "error": "[L7040] Bất thường băng tải 33",
+      "bit": "M7040"
+    },
+    "E0074": {
+      "error": "[L7041] Bất thường băng tải 34",
+      "bit": "M7041"
+    },
+    "E0075": {
+      "error": "[L7042] Bất thường băng tải 41",
+      "bit": "M7042"
+    },
+    "E0076": {
+      "error": "[L7043] Bất thường băng tải 42",
+      "bit": "M7043"
+    },
+    "E0077": {
+      "error": "[L7044] Bất thường băng tải 43",
+      "bit": "M7044"
+    },
+    "E0078": {
+      "error": "[L7045] Bất thường băng tải 44",
+      "bit": "M7045"
+    },
+    "E0079": {
+      "error": "[L7042] Bất thường băng tải 51",
+      "bit": "M7046"
+    },
+    "E0080": {
+      "error": "[L7043] Bất thường băng tải 52",
+      "bit": "M7047"
+    },
+    "E0081": {
+      "error": "[L7044] Bất thường băng tải 53",
+      "bit": "M7048"
+    },
+    "E0082": {
+      "error": "[L7045] Bất thường băng tải 54",
+      "bit": "M7049"
+    },
+    "E0083": {
+      "error": "[L7050] Bất thường băng tải 61",
+      "bit": "M7050"
+    },
+    "E0084": {
+      "error": "[L7051] Bất thường băng tải 62",
+      "bit": "M7051"
+    },
+    "E0085": {
+      "error": "[L7052] Bất thường băng tải 63",
+      "bit": "M7052"
+    },
+    "E0086": {
+      "error": "[L7053] Bất thường băng tải 64",
+      "bit": "M7053"
+    },
+    "E0087": {
+      "error": "[L7054] Lấy bản Fail băng tải...",
+      "bit": "M7054"
+    },
+    "E0088": {
+      "error": "[L7055] Lấy bản Fail băng tải…",
+      "bit": "M7055"
+    },
+    "E0089": {
+      "error": "[L7056] Lấy bản Fail băng tải…",
+      "bit": "M7056"
+    },
+    "E0090": {
+      "error": "[L7057] Lấy bản Fail băng tải…",
+      "bit": "M7057"
+    },
+    "E0091": {
+      "error": "[L7058] Lấy bản Fail băng tải…",
+      "bit": "M7058"
+    },
+    "E0092": {
+      "error": "[L7059] Lấy bản Fail băng tải…",
+      "bit": "M7059"
+    },
+    "E0093": {
+      "error": "[L7060] Bất thường xi-lanh 0",
+      "bit": "M7060"
+    },
+    "E0094": {
+      "error": "[L7061] Bất thường xi-lanh 1",
+      "bit": "M7061"
+    },
+    "E0095": {
+      "error": "[L7062] Bất thường xi-lanh 2",
+      "bit": "M7062"
+    },
+    "E0096": {
+      "error": "[L7063] Bất thường xi-lanh 3",
+      "bit": "M7063"
+    },
+    "E0097": {
+      "error": "[L7064] Bất thường xi-lanh 4",
+      "bit": "M7064"
+    },
+    "E0098": {
+      "error": "[L7065] Bất thường xi-lanh 5",
+      "bit": "M7065"
+    },
+    "E0099": {
+      "error": "[L7066] Bất thường xi-lanh 6",
+      "bit": "M7066"
+    },
+    "E0100": {
+      "error": "[L7067] Bất thường xi-lanh 7",
+      "bit": "M7067"
+    },
+    "E0101": {
+      "error": "[L7068] Bất thường xi-lanh 8",
+      "bit": "M7068"
+    },
+    "E0102": {
+      "error": "[L7069] Bất thường xi-lanh 9",
+      "bit": "M7069"
+    },
+    "E0103": {
+      "error": "[L7070] Bất thường xi-lanh 10",
+      "bit": "M7070"
+    },
+    "E0104": {
+      "error": "[L7071] Bất thường xi-lanh 11",
+      "bit": "M7071"
+    },
+    "E0105": {
+      "error": "[L7072] Bất thường xi-lanh 12",
+      "bit": "M7072"
+    },
+    "E0106": {
+      "error": "[L7073] Bất thường xi-lanh 13",
+      "bit": "M7073"
+    },
+    "E0107": {
+      "error": "[L7074] Bất thường xi-lanh 14",
+      "bit": "M7074"
+    },
+    "E0108": {
+      "error": "[L7075] Bất thường xi-lanh 15",
+      "bit": "M7075"
+    },
+    "E0109": {
+      "error": "[L7076] Bất thường xi-lanh 16",
+      "bit": "M7076"
+    },
+    "E0110": {
+      "error": "[L7077] Bất thường xi-lanh 17",
+      "bit": "M7077"
+    },
+    "E0111": {
+      "error": "[L7078] Bất thường xi-lanh 18",
+      "bit": "M7078"
+    },
+    "E0112": {
+      "error": "[L7079] Bất thường xi-lanh 19",
+      "bit": "M7079"
+    },
+    "E0113": {
+      "error": "[L7080] Bất thường xi-lanh 20",
+      "bit": "M7080"
+    },
+    "E0114": {
+      "error": "[L7081] Bất thường xi-lanh 21",
+      "bit": "M7081"
+    },
+    "E0115": {
+      "error": "[L7082] Bất thường xi-lanh 22",
+      "bit": "M7082"
+    },
+    "E0116": {
+      "error": "[L7083] Bất thường xi-lanh 23",
+      "bit": "M7083"
+    },
+    "E0117": {
+      "error": "[L7084] Bất thường xi-lanh 24",
+      "bit": "M7084"
+    },
+    "E0118": {
+      "error": "[L7085] Bất thường xi-lanh 25",
+      "bit": "M7085"
+    },
+    "E0119": {
+      "error": "[L7086] Bất thường xi-lanh 26",
+      "bit": "M7086"
+    },
+    "E0120": {
+      "error": "[L7087] Bất thường xi-lanh 27",
+      "bit": "M7087"
+    },
+    "E0121": {
+      "error": "[L7088] Bất thường xi-lanh 28",
+      "bit": "M7088"
+    },
+    "E0122": {
+      "error": "[L7089] Bất thường xi-lanh 29",
+      "bit": "M7089"
+    },
+    "E0123": {
+      "error": "[L7090] Lỗi camera dưới làn 1",
+      "bit": "M7090"
+    },
+    "E0124": {
+      "error": "[L7091] Lỗi camera trên làn 1",
+      "bit": "M7091"
+    },
+    "E0125": {
+      "error": "[L7092] Lỗi camera dưới làn 2",
+      "bit": "M7092"
+    },
+    "E0126": {
+      "error": "[L7093] Lỗi camera trên làn 2",
+      "bit": "M7093"
+    },
+    "E0127": {
+      "error": "[L7094] Lỗi camera 4",
+      "bit": "M7094"
+    },
+    "E0128": {
+      "error": "[L7095] Timeout camera dưới làn 1",
+      "bit": "M7095"
+    },
+    "E0129": {
+      "error": "[L7096] Timeout camera trên làn 1",
+      "bit": "M7096"
+    },
+    "E0130": {
+      "error": "[L7097] Timeout camera dưới làn 2",
+      "bit": "M7097"
+    },
+    "E0131": {
+      "error": "[L7098] Timeout camera trên làn 2",
+      "bit": "M7098"
+    },
+    "E0132": {
+      "error": "[L7099] Timeout camera 4",
+      "bit": "M7099"
+    },
+    "E0133": {
+      "error": "[L7100] Gắp lỗi tay 0",
+      "bit": "M7100"
+    },
+    "E0134": {
+      "error": "[L7101] Gắp lỗi tay 1",
+      "bit": "M7101"
+    },
+    "E0135": {
+      "error": "[L7102] Gắp lỗi tay 2",
+      "bit": "M7102"
+    },
+    "E0136": {
+      "error": "[L7103] Gắp lỗi tay 3",
+      "bit": "M7103"
+    },
+    "E0137": {
+      "error": "[L7104] Gắp lỗi tay 4",
+      "bit": "M7104"
+    },
+    "E0138": {
+      "error": "[L7105] Rơi liệu tay 0 ",
+      "bit": "M7105"
+    },
+    "E0139": {
+      "error": "[L7106] Rơi liệu tay 1 ",
+      "bit": "M7106"
+    },
+    "E0140": {
+      "error": "[L7107] Rơi liệu tay 2 ",
+      "bit": "M7107"
+    },
+    "E0141": {
+      "error": "[L7108] Rơi liệu tay 3 ",
+      "bit": "M7108"
+    },
+    "E0142": {
+      "error": "[L7109] Rơi liệu tay 4 ",
+      "bit": "M7109"
+    },
+    "E0143": {
+      "error": "[L7110] Lỗi dán liệu tay 0",
+      "bit": "M7110"
+    },
+    "E0144": {
+      "error": "[L7111] Lỗi dán liệu tay 1",
+      "bit": "M7111"
+    },
+    "E0145": {
+      "error": "[L7112] Lỗi dán liệu tay 2",
+      "bit": "M7112"
+    },
+    "E0146": {
+      "error": "[L7113] Lỗi dán liệu tay 3",
+      "bit": "M7113"
+    },
+    "E0147": {
+      "error": "[L7114] Lỗi dán liệu tay 4",
+      "bit": "M7114"
+    },
+    "E0148": {
+      "error": "[L7115] Lỗi dán liệu …",
+      "bit": "M7115"
+    },
+    "E0149": {
+      "error": "[L7116] Lỗi dán liệu …",
+      "bit": "M7116"
+    },
+    "E0150": {
+      "error": "[L7117] Lỗi dán liệu …",
+      "bit": "M7117"
+    },
+    "E0151": {
+      "error": "[L7118] Lỗi dán liệu …",
+      "bit": "M7118"
+    },
+    "E0152": {
+      "error": "[L7119] Lỗi dán liệu …",
+      "bit": "M7119"
+    },
+    "E0153": {
+      "error": "[L7120] Lỗi bắn vít 0",
+      "bit": "M7120"
+    },
+    "E0154": {
+      "error": "[L7121] Lỗi bắn vít 1",
+      "bit": "M7121"
+    },
+    "E0155": {
+      "error": "[L7122] Lỗi bắn vít 2",
+      "bit": "M7122"
+    },
+    "E0156": {
+      "error": "[L7123] Lỗi bắn vít 3",
+      "bit": "M7123"
+    },
+    "E0157": {
+      "error": "[L7124] Lỗi bắn vít 4",
+      "bit": "M7124"
+    },
+    "E0158": {
+      "error": "[L7125] Lỗi bắn vít 5",
+      "bit": "M7125"
+    },
+    "E0159": {
+      "error": "[L7126] Lỗi bắn vít 6",
+      "bit": "M7126"
+    },
+    "E0160": {
+      "error": "[L7127] Lỗi bắn vít 7",
+      "bit": "M7127"
+    },
+    "E0161": {
+      "error": "[L7128] Lỗi bắn vít 8",
+      "bit": "M7128"
+    },
+    "E0162": {
+      "error": "[L7129] Lỗi bắn vít 9",
+      "bit": "M7129"
+    },
+    "E0163": {
+      "error": "[L7130] Lỗi cảm biến 0",
+      "bit": "M7130"
+    },
+    "E0164": {
+      "error": "[L7131] Lỗi cảm biến 1",
+      "bit": "M7131"
+    },
+    "E0165": {
+      "error": "[L7132] Lỗi cảm biến 2",
+      "bit": "M7132"
+    },
+    "E0166": {
+      "error": "[L7133] Lỗi cảm biến 3",
+      "bit": "M7133"
+    },
+    "E0167": {
+      "error": "[L7134] Lỗi cảm biến 4",
+      "bit": "M7134"
+    },
+    "E0168": {
+      "error": "[L7135] Lỗi cảm biến 5",
+      "bit": "M7135"
+    },
+    "E0169": {
+      "error": "[L7136] Lỗi cảm biến 6",
+      "bit": "M7136"
+    },
+    "E0170": {
+      "error": "[L7137] Lỗi cảm biến 7",
+      "bit": "M7137"
+    },
+    "E0171": {
+      "error": "[L7138] Lỗi cảm biến 8",
+      "bit": "M7138"
+    },
+    "E0172": {
+      "error": "[L7139] Lỗi cảm biến 9",
+      "bit": "M7139"
+    },
+    "E0173": {
+      "error": "[L7140] Feeder 0 error !",
+      "bit": "M7140"
+    },
+    "E0174": {
+      "error": "[L7141] Feeder 1 error !",
+      "bit": "M7141"
+    },
+    "E0175": {
+      "error": "[L7142] Feeder 2 error !",
+      "bit": "M7142"
+    },
+    "E0176": {
+      "error": "[L7143] Feeder 3 error !",
+      "bit": "M7143"
+    },
+    "E0177": {
+      "error": "[L7144] Feeder 4 error !",
+      "bit": "M7144"
+    },
+    "E0178": {
+      "error": "[L7145] Feeder 0 timeout",
+      "bit": "M7145"
+    },
+    "E0179": {
+      "error": "[L7146] Feeder 1 timeout",
+      "bit": "M7146"
+    },
+    "E0180": {
+      "error": "[L7147] Feeder 2 timeout",
+      "bit": "M7147"
+    },
+    "E0181": {
+      "error": "[L7148] Feeder 3 timeout",
+      "bit": "M7148"
+    },
+    "E0182": {
+      "error": "[L7149] Feeder 4 timeout",
+      "bit": "M7149"
+    },
+    "E0183": {
+      "error": "[L7150] Kiểm tra Fixture 0",
+      "bit": "M7150"
+    },
+    "E0184": {
+      "error": "[L7151] Kiểm tra Fixture 1",
+      "bit": "M7151"
+    },
+    "E0185": {
+      "error": "[L7152] Kiểm tra Fixture 2",
+      "bit": "M7152"
+    },
+    "E0186": {
+      "error": "[L7153] Kiểm tra Fixture 3",
+      "bit": "M7153"
+    },
+    "E0187": {
+      "error": "[L7154] Kiểm tra Fixture 4",
+      "bit": "M7154"
+    },
+    "E0188": {
+      "error": "[L7155] Fixture 0 timeout",
+      "bit": "M7155"
+    },
+    "E0189": {
+      "error": "[L7156] Fixture 1 timeout",
+      "bit": "M7156"
+    },
+    "E0190": {
+      "error": "[L7157] Fixture 2 timeout",
+      "bit": "M7157"
+    },
+    "E0191": {
+      "error": "[L7158] Fixture 3 timeout",
+      "bit": "M7158"
+    },
+    "E0192": {
+      "error": "[L7159] Fixture 4 timeout",
+      "bit": "M7159"
+    },
+    "E0193": {
+      "error": "[L7160] Kiểm tra tay gắp 0",
+      "bit": "M7160"
+    },
+    "E0194": {
+      "error": "[L7161] Kiểm tra tay gắp 1",
+      "bit": "M7161"
+    },
+    "E0195": {
+      "error": "[L7162] Kiểm tra tay gắp 2",
+      "bit": "M7162"
+    },
+    "E0196": {
+      "error": "[L7163] Kiểm tra tay gắp 3",
+      "bit": "M7163"
+    },
+    "E0197": {
+      "error": "[L7164] Kiểm tra tay gắp 4",
+      "bit": "M7164"
     }
   }
 }
