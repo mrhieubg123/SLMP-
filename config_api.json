@@ -1,137 +1,127 @@
 {
-    "1":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_1",
+    "1": {
+        "MACHINE_NO": "B06_1F_RFWifi1_Machine_1",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA10"
+        "SECTION_NAME": "RFWifi"
     },
-    "2":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_2",
+    "2": {
+        "MACHINE_NO": "B06_1F_RFWifi1_Machine_2",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA10-1"
+        "SECTION_NAME": "RFWifi"
     },
-    "3":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_3",
+    "3": {
+        "MACHINE_NO": "B06_1F_RFWifi1_Machine_3",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA20"
+        "SECTION_NAME": "RFWifi"
     },
-    "4":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_4",
+    "4": {
+        "MACHINE_NO": "B06_1F_RFWifi1_Machine_4",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA30"
+        "SECTION_NAME": "RFWifi"
     },
-    "5":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_5",
+    "5": {
+        "MACHINE_NO": "B06_1F_RFWifi1_Machine_5",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA40"
+        "SECTION_NAME": "RFWifi"
     },
-    "6":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_6",
+    "6": {
+        "MACHINE_NO": "B06_1F_RFWifi2_Machine_1",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA50"
+        "SECTION_NAME": "RFWifi"
     },
-    "7":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_7",
+    "7": {
+        "MACHINE_NO": "B06_1F_RFWifi2_Machine_2",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA60"
+        "SECTION_NAME": "RFWifi"
     },
-    "8":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_8",
+    "8": {
+        "MACHINE_NO": "B06_1F_RFWifi2_Machine_3",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA80"
+        "SECTION_NAME": "RFWifi"
     },
-    "9":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_9",
+    "9": {
+        "MACHINE_NO": "B06_1F_RFWifi2_Machine_4",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "AOI1"
+        "SECTION_NAME": "RFWifi"
     },
-    "10":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_10",
+    "10": {
+        "MACHINE_NO": "B06_1F_RFWifi2_Machine_5",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA90"
+        "SECTION_NAME": "RFWifi"
     },
-    "11":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_11",
+    "11": {
+        "MACHINE_NO": "B06_1F_RFWifi3_Machine_1",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAA100"
+        "SECTION_NAME": "RFWifi"
     },
-    "12":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_12",
+    "12": {
+        "MACHINE_NO": "B06_1F_RFWifi3_Machine_2",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "OUTPUT"
+        "SECTION_NAME": "RFWifi"
     },
-    "13":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_13",
+    "13": {
+        "MACHINE_NO": "B06_1F_RFWifi3_Machine_3",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE10"
+        "SECTION_NAME": "RFWifi"
     },
-    "14":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_14",
+    "14": {
+        "MACHINE_NO": "B06_1F_RFWifi4_Machine_4",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE10"
+        "SECTION_NAME": "RFWifi"
     },
-    "15":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_15",
+    "15": {
+        "MACHINE_NO": "B06_1F_RFWifi5_Machine_5",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE10"
+        "SECTION_NAME": "RFWifi"
     },
-    "16":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_16",
+    "16": {
+        "MACHINE_NO": "B06_1F_Antenna1_Machine_1",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "OCR"
+        "SECTION_NAME": "RFWifi"
     },
-    "17":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_17",
+    "17": {
+        "MACHINE_NO": "B06_1F_Antenna1_Machine_2",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "M2"
+        "SECTION_NAME": "RFWifi"
     },
-    "18":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_18",
+    "18": {
+        "MACHINE_NO": "B06_1F_Antenna1_Machine_3",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE30"
+        "SECTION_NAME": "RFWifi"
     },
-    "19":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_19",
+    "19": {
+        "MACHINE_NO": "B06_1F_Antenna1_Machine_4",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE40"
+        "SECTION_NAME": "RFWifi"
     },
-    "20":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_20",
+    "20": {
+        "MACHINE_NO": "B06_1F_Antenna1_Machine_5",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE50"
+        "SECTION_NAME": "RFWifi"
     },
-    "21":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_21",
+    "21": {
+        "MACHINE_NO": "B06_1F_Antenna2_Machine_1",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "SAE60"
+        "SECTION_NAME": "RFWifi"
     },
-    "22":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_22",
+    "22": {
+        "MACHINE_NO": "B06_1F_Antenna2_Machine_2",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "AOI2"
+        "SECTION_NAME": "RFWifi"
     },
-    "23":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_23",
+    "23": {
+        "MACHINE_NO": "B06_1F_Antenna2_Machine_3",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "A10"
+        "SECTION_NAME": "RFWifi"
     },
-    "24":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_24",
+    "24": {
+        "MACHINE_NO": "B06_1F_Antenna2_Machine_4",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "A20"
+        "SECTION_NAME": "RFWifi"
     },
-    "25":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_25",
+    "25": {
+        "MACHINE_NO": "B06_1F_Antenna2_Machine_5",
         "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "Auto VI-1"
-    },
-    "26":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_26",
-        "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "Auto VI-2 "
-    },
-    "27":{
-        "MACHINE_NO": "B06_1F_Line1_Machine_27",
-        "PROJECT_NAME": "MINI DISH",
-        "SECTION_NAME": "AIRLEAK"
+        "SECTION_NAME": "RFWifi"
     }
 }

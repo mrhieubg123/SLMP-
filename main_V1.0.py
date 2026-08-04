@@ -244,7 +244,7 @@ def _merge_split_machine_config() -> List[dict]:
             "IP": c.get("IP"),
             "PORT": int(c.get("PORT")),
             "MACHINE_TYPE": c.get("MACHINE_TYPE") or o.get("MACHINE_TYPE"),
-            "M_RUN": normalize_run_addrs(c.get("M_RUN") or o.get("M_RUN")),
+            "M_STOP": normalize_run_addrs(c.get("M_STOP") or o.get("M_STOP")),
             "D_BT": normalize_d_bt_groups(c.get("D_BT")),
             "PASS": (c.get("PASS") or o.get("PASS") or "").strip().upper(),
             "FAIL": (c.get("FAIL") or o.get("FAIL") or "").strip().upper(),
@@ -272,7 +272,7 @@ def _load_legacy_config5(config5_path: str) -> List[dict]:
                 "IP": v.get("IP"),
                 "PORT": int(v.get("PORT")),
                 "MACHINE_TYPE": v.get("MACHINE_TYPE"),
-                "M_RUN": normalize_run_addrs(v.get("M_RUN")),
+                "M_STOP": normalize_run_addrs(v.get("M_STOP")),
                 "D_BT": normalize_d_bt_groups(v.get("D_BT")),
                 "PASS": (v.get("PASS") or "").strip().upper(),
                 "FAIL": (v.get("FAIL") or "").strip().upper(),
@@ -738,7 +738,7 @@ class MachineWorker(threading.Thread):
         self.wait_hold_secs = max(1, int(wait_hold_secs))
         self._wait_state = {"code": None, "label": None, "since": None}
 
-        self.addr_run: List[str] = normalize_run_addrs(m.get("M_RUN"))
+        self.addr_stop: List[str] = normalize_run_addrs(m.get("M_STOP"))
         self.d_bt_groups: List[List[str]] = normalize_d_bt_groups(m.get("D_BT"))
         self.addr_d_bt: List[str] = list(dict.fromkeys(
             addr for group in self.d_bt_groups for addr in group
@@ -749,7 +749,7 @@ class MachineWorker(threading.Thread):
                               style=("smlp" if USE_SMLP_ONE_SHOT else "persistent")))
         if hasattr(self.plc, "subscribe"):
             self.plc.subscribe(
-                bits=self.addr_line + self.addr_err + self.addr_wait + self.addr_run,
+                bits=self.addr_line + self.addr_err + self.addr_wait + self.addr_stop,
                 words=self.addr_d_bt,
             )
         self.stop_ev = threading.Event()
@@ -834,39 +834,6 @@ class MachineWorker(threading.Thread):
                     time.sleep(self.poll)
                     continue
 
-                # o = LINE_OVR.get(line)
-                # if o:
-                #     decision = ("CUT", o["code"], o["name"])
-                #     if decision == self.last_decision:
-                #         self.streak += 1
-                #     else:
-                #         self.last_decision = decision
-                #         self.streak = self.debounce
-                #     if self.streak == self.debounce:
-                #         ts2 = self.db.now_clock()
-                #         self._log_once(name, decision[0], decision[1], decision[2])
-                #         self.db.upsert_status(line, loc, mtype, name, *decision, ts=ts2, category=category, factory=factory)
-                #     try:
-                #         if self.addr_line:
-                #             if not self.plc.is_connected():
-                #                 self.plc.connect()
-                #             vals = self.plc.batch_read_bits(self.addr_line)
-                #             on_now = [a for a in self.addr_line if vals.get(a)]
-                #             if on_now:
-                #                 chosen = sorted(on_now, key=_sort_addr)[0]
-                #                 LINE_OVR.set(line, chosen, self.line_bits.get(chosen, chosen))
-                #                 LINE_OVR_EPOCH[line] = time.time()
-                #                 self.cut_off_streak = 0
-                #             else:
-                #                 self.cut_off_streak += 1
-                #                 if self.cut_off_streak >= self.cut_clear_debounce:
-                #                     LINE_OVR.clear(line)
-                #                     self.cut_off_streak = 0
-                #     except Exception as ee:
-                #         print(f"[CUT][READ-L][WARN] {name} → {ee}")
-                #     time.sleep(self.poll)
-                #     continue
-
                 if not self.plc.is_connected():
                     try:
                         self.plc.connect()
@@ -888,30 +855,17 @@ class MachineWorker(threading.Thread):
                             time.sleep(1)
                         continue
 
-                # addrs = self.addr_line + self.addr_err + self.addr_wait + self.addr_run
-                addrs = self.addr_err + self.addr_wait + self.addr_run
+                # addrs = self.addr_line + self.addr_err + self.addr_wait + self.addr_stop
+                addrs = self.addr_err + self.addr_wait + self.addr_stop
                 if hasattr(self.plc, "read_snapshot"):
                     vals, vals_d, _snapshot_ts = self.plc.read_snapshot(addrs, self.addr_d_bt)
                 else:
                     vals = self.plc.batch_read_bits(addrs) if addrs else {}
                     vals_d = None
 
-                # on_line = [a for a in self.addr_line if vals.get(a)]
-                # if on_line:
-                #     chosen = sorted(on_line, key=_sort_addr)[0]
-                #     label = self.line_bits.get(chosen, chosen)
-                #     LINE_OVR.set(line, chosen, label)
-                #     LINE_OVR_EPOCH[line] = time.time()
-                #     decision = ("CUT", chosen, label)
-                #     if decision == self.last_decision:
-                #         self.streak += 1
-                #     else:
-                #         self.last_decision = decision
-                #         self.streak = self.debounce
-                # else:
-                is_running = False
-                if self.addr_run:
-                    is_running = all(vals.get(addr, False) for addr in self.addr_run)
+                is_stoping = False
+                if self.addr_stop:
+                    is_stoping = any(vals.get(addr, False) for addr in self.addr_stop)
 
                 picked_normal = None
                 for e in self.err_entries:
@@ -920,59 +874,17 @@ class MachineWorker(threading.Thread):
                         picked_normal = e
                         break
 
-                if is_running:
-                    if self.d_bt_groups:
-                        if vals_d is None:
-                            vals_d = self.plc.batch_read_words(self.addr_d_bt)
-                        combos = [tuple(vals_d.get(addr, -1) for addr in group)
-                                  for group in self.d_bt_groups]
-                        standby_patterns = {(0, 0, 0), (6, 10, 10)}
-                        if any(combo in standby_patterns for combo in combos):
-                            decision = ("IDLE", "IDLE", "IDLE")
-                        elif any(combo == (6, 2, 0) for combo in combos):
-                            if picked_normal:
-                                decision = ("ERROR", picked_normal["code"], picked_normal["label"])
-                            else:
-                                waited = self._update_wait_hold(vals)
-                                if waited:
-                                    decision = ("ERROR", waited[0], waited[1])
-                                else:
-                                    decision = ("RUN", None, None)
-                        else:
-                            decision = ("RUN", None, None)
-                    else:
-                        decision = ("RUN", None, None)
+                if is_stoping:
+                    decision = ("STOP", None, None)
                 elif picked_normal :
                     decision = ("ERROR", picked_normal["code"], picked_normal["label"])
                 else:
-                    waited = self._update_wait_hold(vals)
-                    if waited:
-                        decision = ("ERROR", waited[0], waited[1])
-                    else:
-                        decision = ("STOP", None, None)
+                    decision = ("RUN", None, None)
                 if decision == self.last_decision:
                     self.streak += 1
                 else:
                     self.last_decision = decision
                     self.streak = 1
-
-                # t0 = LINE_OVR_EPOCH.get(line)
-                # if t0 and (time.time() - t0) < LINE_OVR_GUARD_SEC:
-                #     if self.last_decision and self.last_decision[0] != "CUT":
-                #         o_now = LINE_OVR.get(line)
-                #         if o_now:
-                #             self.last_decision = ("CUT", o_now["code"], o_now["name"])
-                #             self.streak = self.debounce
-                #         else:
-                #             time.sleep(self.poll)
-                #             continue
-
-                # o_now = LINE_OVR.get(line)
-                # if o_now and self.last_decision[0] != "CUT":
-                #     decision = ("CUT", o_now["code"], o_now["name"])
-                #     if decision != self.last_decision:
-                #         self.last_decision = decision
-                #         self.streak = self.debounce
 
                 if self.streak == self.debounce:
                     ts4 = self.db.now_clock()
@@ -1283,6 +1195,7 @@ class Table3Worker(threading.Thread):
 # ───────── GUI ─────────
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     table_status_signal = QtCore.pyqtSignal(str, str)
+    service_result_signal = QtCore.pyqtSignal(str, bool, object)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -1299,9 +1212,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.machines: List[dict] = []
         self.globals_cfg: Optional[dict] = None
         self.table3_worker: Optional[Table3Worker] = None
+        self.oracle_running = False
+        self._service_switches_ready = False
+        self._line_bits = {}
+        self._grouped_errors = {}
+        self._wait_by_mt = {}
         self._closing_via_confirm = False
         self._table3_status_value = "-"
         self.table_status_signal.connect(self._on_table_status_signal)
+        self.service_result_signal.connect(self._on_service_result)
+
+        self.btn_toggle_api.clicked.connect(self._toggle_api)
+        self.btn_toggle_db.clicked.connect(self._toggle_db)
+        self.btn_toggle_sql.clicked.connect(self._toggle_sql)
+        for button in (self.btn_toggle_api, self.btn_toggle_db, self.btn_toggle_sql):
+            button.setEnabled(False)
 
         if hasattr(self, "save_3"):
             self.save_3.clicked.connect(self.on_setting_clicked)
@@ -1616,9 +1541,93 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.api_supervisor = ApiSupervisor(
                 app_dir(), log_put=self.api_log_put, plc_hub=self.plc_hub
             )
-            self.api_supervisor.start()
+            self.api_supervisor.start(force_enabled=True)
         except Exception as e:
             self.api_log_put(f"[{now_hms()}] API START FAIL: {e}")
+
+    def _set_service_button(self, button, service: str, enabled: bool):
+        button.blockSignals(True)
+        button.setChecked(bool(enabled))
+        button.setText(f"{service}: {'ON' if enabled else 'OFF'}")
+        button.blockSignals(False)
+
+    def _set_service_pending(self, button, service: str):
+        button.setEnabled(False)
+        button.setText(f"{service}: WAIT...")
+
+    def _run_service_action(self, service: str, action):
+        def task():
+            try:
+                result = action()
+                self.service_result_signal.emit(service, True, result)
+            except Exception as exc:
+                self.service_result_signal.emit(service, False, exc)
+        threading.Thread(target=task, daemon=True).start()
+
+    def _on_service_result(self, service: str, success: bool, result):
+        if service == "API":
+            enabled = success and self.api_supervisor is not None and getattr(self.api_supervisor, "running", False)
+            self._set_service_button(self.btn_toggle_api, "API", enabled)
+            self.btn_toggle_api.setEnabled(True)
+        elif service == "SQL":
+            enabled = success and self.sql_supervisor is not None and getattr(self.sql_supervisor, "running", False)
+            self._set_service_button(self.btn_toggle_sql, "SQL", enabled)
+            self.btn_toggle_sql.setEnabled(True)
+        elif service == "DB_STOP":
+            self._connect_ui_set_next_run()
+            self._set_service_button(self.btn_toggle_db, "DB", False)
+            self.btn_toggle_db.setEnabled(True)
+        elif service == "DB_START":
+            if success and self.oracle_running:
+                self._ensure_connect_timer()
+                self._connect_ui_set_next_run()
+            elif not success:
+                self.log_put(f"[{now_hms()}] ORACLE START FAIL: {result}")
+            self._set_service_button(self.btn_toggle_db, "DB", self.oracle_running)
+            self.btn_toggle_db.setEnabled(True)
+
+        if not success and service == "API":
+            self.api_log_put(f"[{now_hms()}] API UI ACTION FAIL: {result}")
+        elif not success and service == "SQL":
+            self.sql_log_put(f"[{now_hms()}] SQL UI ACTION FAIL: {result}")
+
+    def _sync_service_buttons(self, api_enabled: bool, db_enabled: bool, sql_enabled: bool):
+        self._set_service_button(self.btn_toggle_api, "API", api_enabled)
+        self._set_service_button(self.btn_toggle_db, "DB", db_enabled)
+        self._set_service_button(self.btn_toggle_sql, "SQL", sql_enabled)
+        for button in (self.btn_toggle_api, self.btn_toggle_db, self.btn_toggle_sql):
+            button.setEnabled(True)
+        self._service_switches_ready = True
+
+    def _toggle_api(self, enabled: bool):
+        if not self._service_switches_ready:
+            return
+        self._set_service_pending(self.btn_toggle_api, "API")
+        self._run_service_action(
+            "API", self.start_api_supervisor if enabled else self.stop_api_supervisor
+        )
+
+    def _toggle_sql(self, enabled: bool):
+        if not self._service_switches_ready:
+            return
+        self._set_service_pending(self.btn_toggle_sql, "SQL")
+        self._run_service_action(
+            "SQL", self.start_sql_supervisor if enabled else self.stop_sql_supervisor
+        )
+
+    def _toggle_db(self, enabled: bool):
+        if not self._service_switches_ready:
+            return
+        self._set_service_pending(self.btn_toggle_db, "DB")
+        if enabled:
+            self._run_service_action("DB_START", self.start_oracle_workers)
+        else:
+            try:
+                if hasattr(self, '_connect_timer') and self._connect_timer is not None:
+                    self._connect_timer.stop()
+            except Exception:
+                pass
+            self._run_service_action("DB_STOP", self.stop_oracle_workers)
 
     def stop_api_supervisor(self):
         try:
@@ -1635,7 +1644,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.sql_supervisor = SqlSupervisor(
                 app_dir(), log_put=self.sql_log_put, plc_hub=self.plc_hub
             )
-            self.sql_supervisor.start()
+            self.sql_supervisor.start(force_enabled=True)
         except Exception as e:
             self.sql_log_put(f"[{now_hms()}] SQL START FAIL: {e}")
 
@@ -1687,6 +1696,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.machines = machines
         self.globals_cfg = g
+        self._line_bits = line_bits
+        self._grouped_errors = grouped
+        self._wait_by_mt = wait_by_mt
 
         if self.plc_hub is None:
             self.plc_hub = PLCSnapshotHub(
@@ -1695,21 +1707,50 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 log_put=self.log_put,
             )
 
+        self._sync_service_buttons(
+            g.get("api_enabled", True),
+            g.get("oracle_enabled", True),
+            g.get("sql_enabled", True),
+        )
+
         # API, Oracle và SQL độc lập; một tác vụ tắt/lỗi không chặn các tác vụ khác.
         if g.get("api_enabled", True):
             self.start_api_supervisor()
         else:
             self.api_log_put(f"[{now_hms()}] API disabled by runtime_config.json")
+        self._set_service_button(
+            self.btn_toggle_api, "API",
+            self.api_supervisor is not None and getattr(self.api_supervisor, "running", False),
+        )
 
         if g.get("sql_enabled", True):
             self.start_sql_supervisor()
         else:
             self.sql_log_put(f"[{now_hms()}] SQL disabled by runtime_config.json")
+        self._set_service_button(
+            self.btn_toggle_sql, "SQL",
+            self.sql_supervisor is not None and getattr(self.sql_supervisor, "running", False),
+        )
 
         self.running = True
 
         if not g.get("oracle_enabled", True):
             self.log_put(f"[{now_hms()}] ORACLE disabled by runtime_config.json")
+            return
+
+        self.start_oracle_workers()
+        self._set_service_button(self.btn_toggle_db, "DB", self.oracle_running)
+
+    def start_oracle_workers(self):
+        if self.oracle_running:
+            return
+        g = self.globals_cfg
+        machines = self.machines
+        line_bits = self._line_bits
+        grouped = self._grouped_errors
+        wait_by_mt = self._wait_by_mt
+        if not g:
+            self.log_put(f"[{now_hms()}] ORACLE START FAIL: configuration is not loaded")
             return
 
         if not g.get("oracle_user") or not g.get("oracle_password") or not g.get("oracle_dsn"):
@@ -1791,12 +1832,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self._connect_poll_seconds > 0:
             self._connect_next_run = datetime.now() + timedelta(seconds=self._connect_poll_seconds)
 
-        self._connect_ui_set_next_run()
-
-        self._connect_timer = QtCore.QTimer(self)
-        self._connect_timer.setInterval(1000)
-        self._connect_timer.timeout.connect(self._connect_tick)
-        self._connect_timer.start()
+        if QtCore.QThread.currentThread() is self.thread():
+            self._connect_ui_set_next_run()
+            self._ensure_connect_timer()
 
         if not getattr(self, '_connect_inflight', False):
             self._connect_inflight = True
@@ -1812,7 +1850,54 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         self.table3_worker.start()
 
+        self.oracle_running = True
         self.log_put(f"[{now_hms()}] Started {started} workers (auto-run).")
+
+    def _ensure_connect_timer(self):
+        timer = getattr(self, '_connect_timer', None)
+        if timer is None:
+            timer = QtCore.QTimer(self)
+            timer.setInterval(1000)
+            timer.timeout.connect(self._connect_tick)
+            self._connect_timer = timer
+        if not timer.isActive():
+            timer.start()
+
+    def stop_oracle_workers(self):
+        for worker in self.threads:
+            try:
+                worker.stop()
+            except Exception:
+                pass
+        for worker in self.threads:
+            try:
+                worker.join(timeout=5)
+            except Exception:
+                pass
+        self.threads = []
+
+        if QtCore.QThread.currentThread() is self.thread():
+            try:
+                if hasattr(self, '_connect_timer') and self._connect_timer is not None:
+                    self._connect_timer.stop()
+            except Exception:
+                pass
+        self._connect_next_run = None
+        if QtCore.QThread.currentThread() is self.thread():
+            self._connect_ui_set_next_run()
+
+        try:
+            if self.table3_worker is not None:
+                self.table3_worker.stop()
+                self.table3_worker.join(timeout=5)
+        except Exception:
+            pass
+        self.table3_worker = None
+        self.oracle_running = False
+        self.set_table1_status('-')
+        self.set_table2_status('-')
+        self.set_table3_status('-')
+        self.log_put(f"[{now_hms()}] ORACLE/DB workers stopped from UI.")
 
     def stop_workers(self):
         if not self.threads:

@@ -223,7 +223,7 @@ def load_api_machine_config(connect_path: str, api_path: str, oracle_path: str) 
             "KEY": k,
             "IP": c.get("IP"),
             "PORT": int(c.get("PORT")),
-            "M_RUN": _norm_run_addrs(c.get("M_RUN")),
+            "M_STOP": _norm_run_addrs(c.get("M_STOP")),
             "D_BT": _norm_d_bt_groups(c.get("D_BT")),
             # MACHINE_TYPE dùng để tìm nhóm lỗi trong config_group.json.
             # Ưu tiên connect.json, nếu file cũ chưa có thì fallback config_oracle.json.
@@ -746,7 +746,7 @@ class ApiMachineWorker(threading.Thread):
         self.plc = (plc_hub.client(m["IP"], int(m["PORT"])) if plc_hub
                     else PLCReader(m["IP"], int(m["PORT"]), timeout_sec=10.0))
 
-        self.addr_run = _norm_run_addrs(m.get("M_RUN"))
+        self.addr_stop = _norm_run_addrs(m.get("M_STOP"))
         self.d_bt_groups = _norm_d_bt_groups(m.get("D_BT"))
         self.addr_d_bt = list(dict.fromkeys(
             addr for group in self.d_bt_groups for addr in group
@@ -768,7 +768,7 @@ class ApiMachineWorker(threading.Thread):
 
         if hasattr(self.plc, "subscribe"):
             self.plc.subscribe(
-                bits=self.addr_err + self.addr_wait + self.addr_run,
+                bits=self.addr_err + self.addr_wait + self.addr_stop,
                 words=self.addr_d_bt,
             )
 
@@ -837,41 +837,22 @@ class ApiMachineWorker(threading.Thread):
         return None
 
     def _read_decision(self) -> Tuple[int, Optional[str]]:
-        addrs = self.addr_err + self.addr_wait + self.addr_run
+        addrs = self.addr_err + self.addr_wait + self.addr_stop
         if hasattr(self.plc, "read_snapshot"):
             vals, vals_d, _snapshot_ts = self.plc.read_snapshot(addrs, self.addr_d_bt)
         else:
             vals = self.plc.batch_read_bits(addrs) if addrs else {}
             vals_d = None
 
-        if self.addr_run and all(vals.get(addr, False) for addr in self.addr_run):
-            # Check giá trị các thanh ghi D_BT
-            if self.d_bt_groups:
-                if vals_d is None:
-                    vals_d = self.plc.batch_read_words(self.addr_d_bt)
-                combos = [tuple(vals_d.get(addr, -1) for addr in group)
-                          for group in self.d_bt_groups]
-                standby_patterns = {(0, 0, 0), (6, 10, 10)}
-                if any(combo in standby_patterns for combo in combos):
-                    return STATUS_STANDBY, None
-                if any(combo == (6, 2, 0) for combo in combos):
-                    for e in self.err_entries:
-                        if vals.get(_norm_addr(e.get("bit"))):
-                            return STATUS_ERROR, str(e.get("code") or "").strip().upper()
-                    waited_code = self._update_wait_hold(vals)
-                    if waited_code:
-                        return STATUS_ERROR, waited_code
-                    # return STATUS_STANDBY, None
-            return STATUS_RUN, None
-        else:
-            for e in self.err_entries:
-                if vals.get(_norm_addr(e.get("bit"))):
-                    return STATUS_ERROR, str(e.get("code") or "").strip().upper()
-            waited_code = self._update_wait_hold(vals)
-            if waited_code:
-                return STATUS_ERROR, waited_code
-        
-        return STATUS_STOP, None
+        for s in self.addr_stop:
+            if vals.get(s, False):
+                return STATUS_STOP, None
+
+        for e in self.err_entries:
+            if vals.get(_norm_addr(e.get("bit"))):
+                return STATUS_ERROR, str(e.get("code") or "").strip().upper()
+
+        return STATUS_RUN, None
 
     def run(self):
         while not self.stop_ev.is_set():
@@ -1040,11 +1021,11 @@ class ApiSupervisor:
     def _path(self, name: str) -> str:
         return os.path.join(self.base_dir, name)
 
-    def start(self):
+    def start(self, force_enabled: bool = False):
         if self.running:
             return
         cfg = load_runtime_api_config(self._path("runtime_config.json"))
-        if not cfg.get("api_enabled", True):
+        if not force_enabled and not cfg.get("api_enabled", True):
             self.log_put(f"[{now_hms()}] API disabled by runtime_config.json")
             return
 

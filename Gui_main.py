@@ -22,6 +22,51 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet('font: 26pt "MS Serif";')
         self.root.addWidget(self.label)
 
+        # Runtime service switches. Their initial checked state is applied by
+        # MainWindow after runtime_config.json has been loaded.
+        self.service_row = QtWidgets.QHBoxLayout()
+        self.service_row.setContentsMargins(0, 0, 0, 0)
+        self.service_row.setSpacing(8)
+        self.service_row.addStretch(1)
+
+        self.btn_toggle_api = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_toggle_api.setObjectName("btn_toggle_api")
+        self.btn_toggle_api.setCheckable(True)
+        self.service_row.addWidget(self.btn_toggle_api)
+
+        self.btn_toggle_db = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_toggle_db.setObjectName("btn_toggle_db")
+        self.btn_toggle_db.setCheckable(True)
+        self.service_row.addWidget(self.btn_toggle_db)
+
+        self.btn_toggle_sql = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_toggle_sql.setObjectName("btn_toggle_sql")
+        self.btn_toggle_sql.setCheckable(True)
+        self.service_row.addWidget(self.btn_toggle_sql)
+
+        self.service_row.addStretch(1)
+        self.root.addLayout(self.service_row)
+
+        self.centralwidget.setStyleSheet(
+            """
+            QPushButton#btn_toggle_api, QPushButton#btn_toggle_db,
+            QPushButton#btn_toggle_sql {
+                min-width: 92px;
+                min-height: 28px;
+                border: 1px solid #9a3030;
+                border-radius: 5px;
+                background: #b84444;
+                color: white;
+                font-weight: bold;
+            }
+            QPushButton#btn_toggle_api:checked, QPushButton#btn_toggle_db:checked,
+            QPushButton#btn_toggle_sql:checked {
+                border-color: #216b38;
+                background: #2f914c;
+            }
+            """
+        )
+
         # log area: Oracle và API tách 2 tab độc lập
         self.log_tabs = QtWidgets.QTabWidget(self.centralwidget)
         self.log_tabs.setObjectName("log_tabs")
@@ -265,6 +310,10 @@ class Ui_MainWindow(object):
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_oracle), _tr("MainWindow", "ORACLE LOG"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_api), _tr("MainWindow", "API LOG"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_sql), _tr("MainWindow", "SQL LOG"))
+
+        self.btn_toggle_api.setText(_tr("MainWindow", "API: OFF"))
+        self.btn_toggle_db.setText(_tr("MainWindow", "DB: OFF"))
+        self.btn_toggle_sql.setText(_tr("MainWindow", "SQL: OFF"))
 
         self.btn_manual_reset.setText(_tr("MainWindow", "R"))
         self.btn_manual_reset.setToolTip(_tr("MainWindow", "Manual reset PASS/FAIL"))

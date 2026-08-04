@@ -226,13 +226,13 @@ class SqlSupervisor(ApiSupervisor):
         super().__init__(base_dir, log_put=sql_log, plc_hub=plc_hub)
         self.client: Optional[SqlServerClient] = None
 
-    def start(self):
+    def start(self, force_enabled: bool = False):
         if self.running:
             return
 
         runtime_path = self._path("runtime_config.json")
         sql_cfg = load_sql_config(runtime_path)
-        if not sql_cfg["sql_enabled"]:
+        if not force_enabled and not sql_cfg["sql_enabled"]:
             self.log_put(f"[{now_hms()}] SQL disabled by runtime_config.json")
             return
 

@@ -1,218 +1,201 @@
 {
      "1": {
           "STATUS": "True",
-          "Machine_name": "SAA10 - Randome Pick and place",
-          "Line": "T01",
+          "Machine_name": "RB Test 1",
+          "Line": "PCBA RF WIFI 1",
           "Location": "1",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "2": {
           "STATUS": "True",
-          "Machine_name": "SAA10-1 - Sticker HH label to randome",
-          "Line": "T01",
+          "Machine_name": "RB Test 2",
+          "Line": "PCBA RF WIFI 1",
           "Location": "2",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
-          
      },
      "3": {
           "STATUS": "True",
-          "Machine_name": "SAA20 - Assy Upper patch into Radome",
-          "Line": "T01",
+          "Machine_name": "RB Test 3",
+          "Line": "PCBA RF WIFI 1",
           "Location": "3",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "4": {
           "STATUS": "True",
-          "Machine_name": "SAA30 - ASSY Antenna spacer into Radome module",
-          "Line": "T01",
+          "Machine_name": "RB Test 4",
+          "Line": "PCBA RF WIFI 1",
           "Location": "4",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "5": {
           "STATUS": "True",
-          "Machine_name": "SAA40 - ASSY Lower Patch into radome module",
-          "Line": "T01",
+          "Machine_name": "RB Test 5",
+          "Line": "PCBA RF WIFI 1",
           "Location": "5",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "6": {
           "STATUS": "True",
-          "Machine_name": "SAA50 - ASSY DK spacer into radome module",
-          "Line": "T01",
-          "Location": "6",
+          "Machine_name": "RB Test 1",
+          "Line": "PCBA RF WIFI 2",
+          "Location": "1",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "7": {
           "STATUS": "True",
-          "Machine_name": "SAA60 - Assy Antenna PCBA into radome module",
-          "Line": "T01",
-          "Location": "7",
+          "Machine_name": "RB Test 2",
+          "Line": "PCBA RF WIFI 2",
+          "Location": "2",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "8": {
           "STATUS": "True",
-          "Machine_name": "SAA80 - Antenna PCBA Conductive Sealant Dispense",
-          "Line": "T01",
-          "Location": "8",
+          "Machine_name": "RB Test 3",
+          "Line": "PCBA RF WIFI 2",
+          "Location": "3",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "9": {
           "STATUS": "True",
-          "Machine_name": "AOI1 - Check PCBA parts are wrong or missing sealant",
-          "Line": "T01",
-          "Location": "9",
+          "Machine_name": "RB Test 4",
+          "Line": "PCBA RF WIFI 2",
+          "Location": "4",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "10": {
           "STATUS": "True",
-          "Machine_name": "SAA90 - Placed Cookie Sheet to radome module",
-          "Line": "T01",
-          "Location": "10",
+          "Machine_name": "RB Test 5",
+          "Line": "PCBA RF WIFI 2",
+          "Location": "5",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "11": {
           "STATUS": "True",
-          "Machine_name": "SAA100 - Heat staking (plastic studs from Radome)",
-          "Line": "T01",
-          "Location": "11",
+          "Machine_name": "RB Test 1",
+          "Line": "PCBA RF WIFI 3",
+          "Location": "1",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "12": {
           "STATUS": "True",
-          "Machine_name": "Output",
-          "Line": "T01",
-          "Location": "12",
+          "Machine_name": "RB Test 2",
+          "Line": "PCBA RF WIFI 3",
+          "Location": "2",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "13": {
           "STATUS": "True",
-          "Machine_name": "SAE10 - Enclosure housing loading & Laser Etching",
-          "Line": "T01",
-          "Location": "13",
+          "Machine_name": "RB Test 3",
+          "Line": "PCBA RF WIFI 3",
+          "Location": "3",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "14": {
           "STATUS": "True",
-          "Machine_name": "SAE10 - Enclosure housing loading & Laser Etching",
-          "Line": "T01",
-          "Location": "14",
+          "Machine_name": "RB Test 4",
+          "Line": "PCBA RF WIFI 3",
+          "Location": "4",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "15": {
           "STATUS": "True",
-          "Machine_name": "SAE10 - Enclosure housing loading & Laser Etching",
-          "Line": "T01",
-          "Location": "15",
+          "Machine_name": "RB Test 5",
+          "Line": "PCBA RF WIFI 3",
+          "Location": "5",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "16": {
           "STATUS": "True",
-          "Machine_name": "OCR - OCR check",
-          "Line": "T01",
-          "Location": "16",
+          "Machine_name": "RB Test 1",
+          "Line": "PCBA ANTENNA 1",
+          "Location": "1",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "17": {
           "STATUS": "True",
-          "Machine_name": "M2 - Turnover enclosure",
-          "Line": "T01",
-          "Location": "17",
+          "Machine_name": "RB Test 2",
+          "Line": "PCBA ANTENNA 1",
+          "Location": "2",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "18": {
           "STATUS": "True",
-          "Machine_name": "SAE30 - Apply gore vent into enclosure & AOI Check",
-          "Line": "T01",
-          "Location": "18",
+          "Machine_name": "RB Test 3",
+          "Line": "PCBA ANTENNA 1",
+          "Location": "3",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "19": {
           "STATUS": "True",
-          "Machine_name": "SAE40 - Snap WIFI PCBA into enclosure",
-          "Line": "T01",
-          "Location": "19",
+          "Machine_name": "RB Test 4",
+          "Line": "PCBA ANTENNA 1",
+          "Location": "4",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "20": {
           "STATUS": "True",
-          "Machine_name": "SAE50 - Apply TIM Dispense on WIFI PCBA",
-          "Line": "T01",
-          "Location": "20",
+          "Machine_name": "RB Test 5",
+          "Line": "PCBA ANTENNA 1",
+          "Location": "5",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "21": {
           "STATUS": "True",
-          "Machine_name": "SAE60 - Conductive sealant Dispense on WIFI PCBA",
-          "Line": "T01",
-          "Location": "21",
+          "Machine_name": "RB Test 1",
+          "Line": "PCBA ANTENNA 2",
+          "Location": "1",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "22": {
           "STATUS": "True",
-          "Machine_name": "AOI2 - Conductive sealant",
-          "Line": "T01",
-          "Location": "22",
+          "Machine_name": "RB Test 2",
+          "Line": "PCBA ANTENNA 2",
+          "Location": "2",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "23": {
           "STATUS": "True",
-          "Machine_name": "A10 - Enclosure module & Antenna module Assembly",
-          "Line": "T01",
-          "Location": "23",
+          "Machine_name": "RB Test 3",
+          "Line": "PCBA ANTENNA 2",
+          "Location": "3",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "24": {
           "STATUS": "True",
-          "Machine_name": "A20 - Enclose SA & Antenna SA USW",
-          "Line": "T01",
-          "Location": "24",
+          "Machine_name": "RB Test 4",
+          "Line": "PCBA ANTENNA 2",
+          "Location": "4",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      },
      "25": {
           "STATUS": "True",
-          "Machine_name": "Auto VI-1 - Visual inspection BOT & GAP",
-          "Line": "T01",
-          "Location": "25",
-          "Category": "MINI DISH KID",
-          "FACTORY": "B06"
-     },
-     "26": {
-          "STATUS": "True",
-          "Machine_name": "Auto VI-2 - Visual inspection FRONT & GAP",
-          "Line": "T01",
-          "Location": "26",
-          "Category": "MINI DISH KID",
-          "FACTORY": "B06"
-     },
-     "27": {
-          "STATUS": "True",
-          "Machine_name": "AIRLEAK - Air leakage test",
-          "Line": "T01",
-          "Location": "27",
+          "Machine_name": "RB Test 5",
+          "Line": "PCBA ANTENNA 2",
+          "Location": "5",
           "Category": "MINI DISH KID",
           "FACTORY": "B06"
      }
