@@ -747,6 +747,7 @@ class ApiMachineWorker(threading.Thread):
                     else PLCReader(m["IP"], int(m["PORT"]), timeout_sec=10.0))
 
         self.addr_stop = _norm_run_addrs(m.get("M_STOP"))
+        self.addr_run = "M6003"
         self.d_bt_groups = _norm_d_bt_groups(m.get("D_BT"))
         self.addr_d_bt = list(dict.fromkeys(
             addr for group in self.d_bt_groups for addr in group
@@ -768,7 +769,7 @@ class ApiMachineWorker(threading.Thread):
 
         if hasattr(self.plc, "subscribe"):
             self.plc.subscribe(
-                bits=self.addr_err + self.addr_wait + self.addr_stop,
+                bits=self.addr_err + self.addr_wait + self.addr_stop + [self.addr_run],
                 words=self.addr_d_bt,
             )
 
@@ -837,12 +838,15 @@ class ApiMachineWorker(threading.Thread):
         return None
 
     def _read_decision(self) -> Tuple[int, Optional[str]]:
-        addrs = self.addr_err + self.addr_wait + self.addr_stop
+        addrs = self.addr_err + self.addr_wait + self.addr_stop + [self.addr_run]
         if hasattr(self.plc, "read_snapshot"):
             vals, vals_d, _snapshot_ts = self.plc.read_snapshot(addrs, self.addr_d_bt)
         else:
             vals = self.plc.batch_read_bits(addrs) if addrs else {}
             vals_d = None
+
+        if vals.get(self.addr_run, False):
+            return STATUS_RUN, None
 
         for s in self.addr_stop:
             if vals.get(s, False):
@@ -852,7 +856,7 @@ class ApiMachineWorker(threading.Thread):
             if vals.get(_norm_addr(e.get("bit"))):
                 return STATUS_ERROR, str(e.get("code") or "").strip().upper()
 
-        return STATUS_RUN, None
+        return STATUS_STANDBY, None
 
     def run(self):
         while not self.stop_ev.is_set():

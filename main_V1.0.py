@@ -739,6 +739,7 @@ class MachineWorker(threading.Thread):
         self._wait_state = {"code": None, "label": None, "since": None}
 
         self.addr_stop: List[str] = normalize_run_addrs(m.get("M_STOP"))
+        self.addr_run = "M6003"
         self.d_bt_groups: List[List[str]] = normalize_d_bt_groups(m.get("D_BT"))
         self.addr_d_bt: List[str] = list(dict.fromkeys(
             addr for group in self.d_bt_groups for addr in group
@@ -749,7 +750,7 @@ class MachineWorker(threading.Thread):
                               style=("smlp" if USE_SMLP_ONE_SHOT else "persistent")))
         if hasattr(self.plc, "subscribe"):
             self.plc.subscribe(
-                bits=self.addr_line + self.addr_err + self.addr_wait + self.addr_stop,
+                bits=self.addr_line + self.addr_err + self.addr_wait + self.addr_stop + [self.addr_run],
                 words=self.addr_d_bt,
             )
         self.stop_ev = threading.Event()
@@ -856,13 +857,14 @@ class MachineWorker(threading.Thread):
                         continue
 
                 # addrs = self.addr_line + self.addr_err + self.addr_wait + self.addr_stop
-                addrs = self.addr_err + self.addr_wait + self.addr_stop
+                addrs = self.addr_err + self.addr_wait + self.addr_stop + [self.addr_run]
                 if hasattr(self.plc, "read_snapshot"):
                     vals, vals_d, _snapshot_ts = self.plc.read_snapshot(addrs, self.addr_d_bt)
                 else:
                     vals = self.plc.batch_read_bits(addrs) if addrs else {}
                     vals_d = None
 
+                is_running = vals.get(self.addr_run, False)
                 is_stoping = False
                 if self.addr_stop:
                     is_stoping = any(vals.get(addr, False) for addr in self.addr_stop)
@@ -874,12 +876,14 @@ class MachineWorker(threading.Thread):
                         picked_normal = e
                         break
 
-                if is_stoping:
+                if is_running:
+                    decision = ("RUN", None, None)
+                elif is_stoping:
                     decision = ("STOP", None, None)
                 elif picked_normal :
                     decision = ("ERROR", picked_normal["code"], picked_normal["label"])
                 else:
-                    decision = ("RUN", None, None)
+                    decision = ("IDLE", "IDLE", "IDLE")
                 if decision == self.last_decision:
                     self.streak += 1
                 else:

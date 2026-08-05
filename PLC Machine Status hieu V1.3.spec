@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='PLC Machine RB Test Status hieu V1.4.0',
+    name='PLC Machine RB Test Status hieu V1.4.1',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
