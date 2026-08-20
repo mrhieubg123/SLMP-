@@ -800,6 +800,132 @@
       "bit": "SM5687"
     }
   },
+  "Pack Machine": {
+    "P-SERVO001": {
+      "error": "Alarm trục servo",
+      "bit": "L1"
+    },
+    "P-CY1X1-CY00": {
+      "error": "Kiểm tra cảm biến xilanh 1 trục X1",
+      "bit": "L10"
+    },
+    "P-CY2X1-CY00": {
+      "error": "Kiểm tra cảm biến xilanh 2 trục X1",
+      "bit": "L11"
+    },
+    "P-CYY1-CY00": {
+      "error": "Kiểm tra cảm biến xilanh trục Y1",
+      "bit": "L12"
+    },
+    "P-CYX2-CY00": {
+      "error": "Kiểm tra cảm biến xilanh trục X2",
+      "bit": "L13"
+    },
+    "P-CYY2-CY00": {
+      "error": "Kiểm tra cảm biến xilanh trục Y2",
+      "bit": "L14"
+    },
+    "P-CYM-CY00": {
+      "error": "Kiểm tra cảm biến xilanh trục M",
+      "bit": "L15"
+    },
+    "P-CYL11-CY00": {
+      "error": "Kiểm tra cảm biến xilanh đỡ box",
+      "bit": "L16"
+    },
+    "P-CYL12-CY00": {
+      "error": "Kiểm tra cảm biến xilanh gạt box",
+      "bit": "L17"
+    },
+    "P-SER01-SR00": {
+      "error": "Kiểm tra cảm biến có box",
+      "bit": "L20"
+    },
+    "P-SER02-SR00": {
+      "error": "Kiểm tra cảm biến áp suất hút nắp",
+      "bit": "L21"
+    },
+    "P-SER03-SR00": {
+      "error": "Kiểm tra cảm biến đầy box",
+      "bit": "L22"
+    },
+    "P-SER04-SR00": {
+      "error": "Kiểm tra cảm biến áp suất hút box",
+      "bit": "L23"
+    },
+    "P-SERP5-SR00": {
+      "error": "Kiểm tra cảm biến có nắp",
+      "bit": "L24"
+    },
+    "P-SERP6-SR00": {
+      "error": "Kiểm tra cảm biến nhìn nắp ",
+      "bit": "L25"
+    },
+    "P-SERP7-SR00": {
+      "error": "Kiểm tra cảm biến nhìn nắp ",
+      "bit": "L26"
+    },
+    "P-C7025": {
+      "error": "Đang chạm cảm biến an toàn cấp liệu",
+      "bit": "M115"
+    },
+    "P-X1001": {
+      "error": "Alarm trục X1",
+      "bit": "M7000"
+    },
+    "P-Y1001": {
+      "error": "Alarm trục Y1",
+      "bit": "M7001"
+    },
+    "P-X2001": {
+      "error": "Alarm trục X2",
+      "bit": "M7002"
+    },
+    "P-Y2001": {
+      "error": "Alarm trục Y2",
+      "bit": "M7003"
+    },
+    "P-Z2001": {
+      "error": "Alarm trục Z2",
+      "bit": "M7004"
+    },
+    "P-Z1001": {
+      "error": "Alarm trục Z1",
+      "bit": "M7005"
+    },
+    "P-Z0001": {
+      "error": "Alarm trục Z0",
+      "bit": "M7006"
+    },
+    "P-X1002": {
+      "error": "Đang chạm limit trục X1",
+      "bit": "M7007"
+    },
+    "P-Y1002": {
+      "error": "Đang chạm limit trục Y1",
+      "bit": "M7008"
+    },
+    "P-X2002": {
+      "error": "Đang chạm limit trục X2",
+      "bit": "M7009"
+    },
+    "P-Y2002": {
+      "error": "Đang chạm limit trục Y2",
+      "bit": "M7010"
+    },
+    "P-Z2002": {
+      "error": "Đang chạm limit trục Z2",
+      "bit": "M7011"
+    },
+    "P-Z1002": {
+      "error": "Đang chạm limit trục Z1",
+      "bit": "M7012"
+    },
+    "P-Z0002": {
+      "error": "Đang chạm limit trục Z0",
+      "bit": "M7013"
+    }
+  },
   "XY Machine": {
     "E0036": {
       "error": "[H7000] Alarm trục",

@@ -3,6 +3,7 @@
 import json
 import os
 import threading
+import time
 from typing import Optional, Tuple
 
 try:
@@ -58,10 +59,13 @@ class SqlServerClient:
     current_state_url = INFO_TABLE
     summary_url = SUMMARY_TABLE
 
-    def __init__(self, string_connect: str, log_put=None):
+    def __init__(self, string_connect: str, log_put=None, reconnect_attempts: int = 3,
+                 reconnect_delay_seconds: float = 2.0):
         self.string_connect = str(string_connect or "").strip()
         self.log_put = log_put or (lambda msg: None)
         self.lock = threading.RLock()
+        self.reconnect_attempts = max(1, int(reconnect_attempts))
+        self.reconnect_delay_seconds = max(0.1, float(reconnect_delay_seconds))
 
     def _connect(self):
         if pyodbc is None:
@@ -77,14 +81,29 @@ class SqlServerClient:
             cursor.fetchone()
 
     def _execute(self, operation: str, payload: dict, action) -> Tuple[bool, str]:
+        last_exc = None
+        for attempt in range(1, self.reconnect_attempts + 1):
+            try:
+                with self.lock:
+                    with self._connect() as conn:
+                        cursor = conn.cursor()
+                        action(cursor)
+                        conn.commit()
+                if attempt > 1:
+                    self.log_put(f"[{now_hms()}] SQL RECONNECTED")
+                return True, "success"
+            except Exception as exc:
+                last_exc = exc
+                if attempt < self.reconnect_attempts:
+                    self.log_put(
+                        f"[{now_hms()}] SQL connection lost; reconnect "
+                        f"{attempt}/{self.reconnect_attempts - 1} in "
+                        f"{self.reconnect_delay_seconds:g}s: {exc}"
+                    )
+                    time.sleep(self.reconnect_delay_seconds)
+
+        exc = last_exc or RuntimeError("SQL connection failed")
         try:
-            with self.lock:
-                with self._connect() as conn:
-                    cursor = conn.cursor()
-                    action(cursor)
-                    conn.commit()
-            return True, "success"
-        except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
             try:
                 body = json.dumps(payload, ensure_ascii=False, default=str)
@@ -94,6 +113,8 @@ class SqlServerClient:
                 f"[{now_hms()}] SQL {operation} ERROR | ERROR={detail} | DATA={body}"
             )
             return False, detail
+        except Exception:
+            return False, str(exc)
 
     def send_error_record(self, payload: dict) -> Tuple[bool, str]:
         def action(cursor):
@@ -240,7 +261,14 @@ class SqlSupervisor(ApiSupervisor):
         self.client = SqlServerClient(
             sql_cfg["string_connect"], log_put=self.log_put
         )
-        self.client.test_connection()
+        try:
+            self.client.test_connection()
+        except Exception as exc:
+            # Vẫn khởi động worker: mỗi thao tác SQL sẽ tự mở kết nối mới và retry.
+            self.log_put(
+                f"[{now_hms()}] SQL CONNECT FAIL: {exc}; "
+                "workers started and will reconnect automatically"
+            )
 
         machines = load_api_machine_config(
             self._path("connect.json"),

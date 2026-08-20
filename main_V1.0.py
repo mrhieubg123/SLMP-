@@ -76,6 +76,9 @@ def normalize_run_addrs(value) -> List[str]:
 
 def normalize_d_bt_groups(value) -> List[List[str]]:
     """Mỗi phần tử D_BT phải là một combo gồm đúng 3 thanh ghi word."""
+    if value is None:
+        return [list(group) for group in DEFAULT_D_BT_GROUPS]
+
     raw_groups = value if isinstance(value, (list, tuple)) else []
     result: List[List[str]] = []
     for raw_group in raw_groups:
@@ -84,7 +87,7 @@ def normalize_d_bt_groups(value) -> List[List[str]]:
         group = [str(addr or "").strip().upper() for addr in raw_group]
         if all(_WORD_ADDR_RE.fullmatch(addr) for addr in group):
             result.append(group)
-    return result or [list(group) for group in DEFAULT_D_BT_GROUPS]
+    return result
 
 
 def parse_bit_addr(addr: str) -> Tuple[str, int]:
@@ -327,6 +330,18 @@ def load_machine_config(config5_path: str = None):
             config5_path = res_path("config_5.json")
         machines = _load_legacy_config5(config5_path)
     return globals_cfg, machines
+
+
+def load_service_enabled_config():
+    """Đọc trạng thái bật/tắt ban đầu của các dịch vụ từ runtime_config.json."""
+    rt_path = res_path("runtime_config.json")
+    with open(rt_path, "r", encoding="utf-8") as f:
+        rt_raw = json.load(f)
+    return {
+        "oracle": _as_bool(_get(rt_raw, "oracle_enabled", True), True),
+        "api": _as_bool(_get(rt_raw, "api_enabled", True), True),
+        "sql": _as_bool(_get(rt_raw, "sql_enabled", True), True),
+    }
 
 
 def get_unique_lines_from_machine_config() -> List[str]:
@@ -608,9 +623,31 @@ class PLCClient:
 # ───────── Oracle DB adapter (giữ nguyên) ─────────
 class OracleDBAdapter:
     def __init__(self, user: str, password: str, dsn: str, table_name: str, log_put):
-        self.core = OracleCoreDB(user=user, password=password, dsn=dsn, table_name=table_name)
+        self._connect_args = dict(user=user, password=password, dsn=dsn, table_name=table_name)
+        self._reconnect_lock = threading.RLock()
+        self.core = OracleCoreDB(**self._connect_args)
         self.log_put = log_put
         self._clk_cache = {"t": 0.0, "now": None}
+
+    def reconnect(self) -> Tuple[bool, Optional[str]]:
+        """Tạo lại pool Oracle; an toàn khi nhiều worker cùng phát hiện mất mạng."""
+        with self._reconnect_lock:
+            old_core = self.core
+            try:
+                new_core = OracleCoreDB(**self._connect_args)
+                rows = new_core.fetch_all("SELECT 1 FROM dual")
+                if not rows or rows[0][0] != 1:
+                    new_core.close()
+                    return False, "SELECT 1 FROM dual không trả về dữ liệu"
+                self.core = new_core
+                try:
+                    old_core.close()
+                except Exception:
+                    pass
+                self.log_put(f"[{now_hms()}] ORACLE RECONNECTED")
+                return True, None
+            except Exception as exc:
+                return False, str(exc)
 
     def test_connection(self) -> Tuple[bool, Optional[str]]:
         """
@@ -653,6 +690,13 @@ class OracleDBAdapter:
         ok = self.core.upsert_status(cfg=cfg, status=status,
                                      now_dt=ts or self.now_clock(),
                                      error_code=code, error_text=label)
+        if not ok and self.core.last_error:
+            self.log_put(f"[{now_hms()}] ORACLE connection error; reconnecting: {self.core.last_error}")
+            reconnected, _ = self.reconnect()
+            if reconnected:
+                ok = self.core.upsert_status(cfg=cfg, status=status,
+                                             now_dt=ts or self.now_clock(),
+                                             error_code=code, error_text=label)
         mw = getattr(self, 'main_window', None)
         if ok:
             if mw:
@@ -1283,6 +1327,9 @@ class Table3Worker(threading.Thread):
 # ───────── GUI ─────────
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     table_status_signal = QtCore.pyqtSignal(str, str)
+    service_result_signal = QtCore.pyqtSignal(str, bool)
+    oracle_timer_signal = QtCore.pyqtSignal()
+    shutdown_finished_signal = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -1294,14 +1341,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.sql_log_q: "queue.Queue[str]" = queue.Queue()
         self.api_supervisor = None
         self.sql_supervisor = None
-        self.plc_hub = None
+        # Tạo đúng một hub trước khi Oracle/API/SQL có thể khởi động. Mọi dịch vụ
+        # phải dùng hub này để mỗi IP:PORT chỉ có một kết nối và một snapshot PLC.
+        try:
+            with open(res_path("runtime_config.json"), "r", encoding="utf-8") as f:
+                rt_raw = json.load(f)
+            plc_poll = float(_get(rt_raw, "poll_interval_sec", 0.5))
+        except Exception as exc:
+            plc_poll = 0.5
+            self.log_q.put_nowait(
+                f"[{now_hms()}] PLC HUB CONFIG WARN: dùng poll mặc định 0.5s: {exc}"
+            )
+        self.plc_hub = PLCSnapshotHub(
+            poll=plc_poll,
+            timeout=10.0,
+            log_put=self.log_put,
+        )
         self.db = None
         self.machines: List[dict] = []
         self.globals_cfg: Optional[dict] = None
         self.table3_worker: Optional[Table3Worker] = None
         self._closing_via_confirm = False
         self._table3_status_value = "-"
+        self._oracle_retry_pending = False
+        self._oracle_requested = False
         self.table_status_signal.connect(self._on_table_status_signal)
+        self.service_result_signal.connect(self._on_service_result)
+        self.oracle_timer_signal.connect(self._start_oracle_timers)
+        self.shutdown_finished_signal.connect(self._finish_shutdown)
+        self._shutdown_finished = False
+
+        self.chk_oracle.toggled.connect(self._toggle_oracle)
+        self.chk_api.toggled.connect(self._toggle_api)
+        self.chk_sql.toggled.connect(self._toggle_sql)
 
         if hasattr(self, "save_3"):
             self.save_3.clicked.connect(self.on_setting_clicked)
@@ -1323,9 +1395,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.timer.timeout.connect(self.drain_logs)
         self.timer.start()
 
-        # Cho Qt render cửa sổ hoàn chỉnh trước khi bắt đầu các bước kết nối
-        # Oracle/API có thể mất vài giây.
-        QtCore.QTimer.singleShot(150, self.start_workers)
+        # Đồng bộ checkbox và khởi động các dịch vụ theo runtime_config.json sau khi
+        # event loop sẵn sàng, để tín hiệu cập nhật GUI luôn chạy trên GUI thread.
+        QtCore.QTimer.singleShot(0, self._initialize_service_switches)
+
+    def _initialize_service_switches(self):
+        try:
+            enabled_config = load_service_enabled_config()
+        except Exception as exc:
+            self.log_put(f"[{now_hms()}] CONFIG FAIL: Không đọc được trạng thái dịch vụ: {exc}")
+            enabled_config = {"oracle": False, "api": False, "sql": False}
+
+        switches = (
+            (self.chk_oracle, "Oracle", enabled_config["oracle"]),
+            (self.chk_api, "API", enabled_config["api"]),
+            (self.chk_sql, "SQL", enabled_config["sql"]),
+        )
+        for widget, name, enabled in switches:
+            self._set_switch_text(widget, name, enabled)
+            widget.setChecked(enabled)
 
     def log_put(self, msg: str):
         try:
@@ -1613,6 +1701,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.api_supervisor is not None and getattr(self.api_supervisor, "running", False):
             return
         try:
+            if self.plc_hub is None:
+                raise RuntimeError("Shared PLC hub is not available")
             self.api_supervisor = ApiSupervisor(
                 app_dir(), log_put=self.api_log_put, plc_hub=self.plc_hub
             )
@@ -1632,12 +1722,95 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.sql_supervisor is not None and getattr(self.sql_supervisor, "running", False):
             return
         try:
+            if self.plc_hub is None:
+                raise RuntimeError("Shared PLC hub is not available")
             self.sql_supervisor = SqlSupervisor(
                 app_dir(), log_put=self.sql_log_put, plc_hub=self.plc_hub
             )
             self.sql_supervisor.start()
         except Exception as e:
             self.sql_log_put(f"[{now_hms()}] SQL START FAIL: {e}")
+
+    @staticmethod
+    def _set_switch_text(widget, name: str, enabled: bool):
+        widget.setText(f"{name}: {'ON' if enabled else 'OFF'}")
+
+    def _on_service_result(self, service: str, enabled: bool):
+        widget = {
+            "Oracle": self.chk_oracle,
+            "API": self.chk_api,
+            "SQL": self.chk_sql,
+        }[service]
+        widget.blockSignals(True)
+        widget.setChecked(enabled)
+        widget.setEnabled(True)
+        widget.blockSignals(False)
+        self._set_switch_text(widget, service, enabled)
+
+    def _run_service_action(self, service: str, enabled: bool):
+        try:
+            if service == "Oracle":
+                if enabled:
+                    self.start_workers()
+                    # ON là trạng thái được yêu cầu; Oracle có thể đang chờ auto-reconnect.
+                    result = self.running or self._oracle_retry_pending
+                else:
+                    self._oracle_retry_pending = False
+                    self.stop_workers(stop_services=False)
+                    result = False
+            elif service == "API":
+                if enabled:
+                    self.start_api_supervisor()
+                else:
+                    self.stop_api_supervisor()
+                result = bool(enabled and self.api_supervisor and
+                              getattr(self.api_supervisor, "running", False))
+            else:
+                if enabled:
+                    self.start_sql_supervisor()
+                else:
+                    self.stop_sql_supervisor()
+                result = bool(enabled and self.sql_supervisor and
+                              getattr(self.sql_supervisor, "running", False))
+        except Exception as exc:
+            result = False
+            log = self.log_put if service == "Oracle" else (
+                self.api_log_put if service == "API" else self.sql_log_put
+            )
+            log(f"[{now_hms()}] {service.upper()} SWITCH FAIL: {exc}")
+        self.service_result_signal.emit(service, result)
+
+    def _toggle_oracle(self, enabled: bool):
+        self._oracle_requested = enabled
+        self._set_switch_text(self.chk_oracle, "Oracle", enabled)
+        self.chk_oracle.setEnabled(False)
+        if not enabled:
+            try:
+                if (QtCore.QThread.currentThread() is self.thread() and
+                        hasattr(self, '_connect_timer') and self._connect_timer is not None):
+                    self._connect_timer.stop()
+            except Exception:
+                pass
+            self.set_table1_status("off")
+            self.set_table2_status("off")
+            self.set_table3_status("off")
+        threading.Thread(
+            target=self._run_service_action, args=("Oracle", enabled), daemon=True
+        ).start()
+
+    def _toggle_api(self, enabled: bool):
+        self._set_switch_text(self.chk_api, "API", enabled)
+        self.chk_api.setEnabled(False)
+        threading.Thread(
+            target=self._run_service_action, args=("API", enabled), daemon=True
+        ).start()
+
+    def _toggle_sql(self, enabled: bool):
+        self._set_switch_text(self.chk_sql, "SQL", enabled)
+        self.chk_sql.setEnabled(False)
+        threading.Thread(
+            target=self._run_service_action, args=("SQL", enabled), daemon=True
+        ).start()
 
     def stop_sql_supervisor(self):
         try:
@@ -1646,6 +1819,41 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except Exception as e:
             self.sql_log_put(f"[{now_hms()}] SQL STOP FAIL: {e}")
         self.sql_supervisor = None
+
+    def _schedule_oracle_retry(self, delay_seconds: int = 10):
+        """Thử lại Oracle, không tạo trùng các supervisor đang chạy."""
+        if self._oracle_retry_pending or self._closing_via_confirm:
+            return
+        self._oracle_retry_pending = True
+        self.log_put(f"[{now_hms()}] ORACLE: sẽ tự kết nối lại sau {delay_seconds} giây")
+
+        def retry():
+            self._oracle_retry_pending = False
+            if self._closing_via_confirm or not self._oracle_requested:
+                return
+            self.running = False
+            self.start_workers()
+
+        timer = threading.Timer(max(1, int(delay_seconds)), retry)
+        timer.daemon = True
+        timer.start()
+
+    def _start_oracle_timers(self):
+        """Tạo QTimer trên GUI thread sau khi kết nối Oracle hoàn tất ở worker."""
+        try:
+            if (QtCore.QThread.currentThread() is self.thread() and
+                    hasattr(self, '_connect_timer') and self._connect_timer is not None):
+                self._connect_timer.stop()
+        except Exception:
+            pass
+        self._connect_timer = QtCore.QTimer(self)
+        self._connect_timer.setInterval(1000)
+        self._connect_timer.timeout.connect(self._connect_tick)
+        self._connect_timer.start()
+        self._connect_ui_set_next_run()
+        if not getattr(self, '_connect_inflight', False):
+            self._connect_inflight = True
+            threading.Thread(target=self._connect_job, daemon=True).start()
 
     def confirm_close(self):
         box = QtWidgets.QMessageBox(self)
@@ -1660,17 +1868,42 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         ret = box.exec_()
         if ret == QtWidgets.QMessageBox.Yes:
+            self._closing_via_confirm = True
+            self._oracle_requested = False
             self.setEnabled(False)
             QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
             try:
-                if chk.isChecked():
-                    self.send_all_off()
-                self.stop_workers()
-            finally:
-                QtWidgets.QApplication.restoreOverrideCursor()
+                if hasattr(self, '_connect_timer') and self._connect_timer is not None:
+                    self._connect_timer.stop()
+            except Exception:
+                pass
 
-            self._closing_via_confirm = True
-            QtWidgets.QApplication.instance().quit()
+            send_off = bool(chk.isChecked() and self.chk_oracle.isChecked())
+            threading.Thread(
+                target=self._shutdown_in_background, args=(send_off,), daemon=True
+            ).start()
+            # Không để một driver/network call bị kẹt làm ứng dụng không thể đóng.
+            QtCore.QTimer.singleShot(8000, self._finish_shutdown)
+
+    def _shutdown_in_background(self, send_off: bool):
+        try:
+            if send_off:
+                self.send_all_off()
+            self.stop_workers()
+        except Exception as exc:
+            self.log_put(f"[{now_hms()}] SHUTDOWN ERROR: {exc}")
+        finally:
+            self.shutdown_finished_signal.emit()
+
+    def _finish_shutdown(self):
+        if self._shutdown_finished:
+            return
+        self._shutdown_finished = True
+        try:
+            QtWidgets.QApplication.restoreOverrideCursor()
+        except Exception:
+            pass
+        QtWidgets.QApplication.instance().quit()
 
     def start_workers(self):
         if self.running:
@@ -1689,24 +1922,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.globals_cfg = g
 
         if self.plc_hub is None:
-            self.plc_hub = PLCSnapshotHub(
-                poll=g.get("poll_interval_sec", 0.5),
-                timeout=10.0,
-                log_put=self.log_put,
-            )
-
-        # API, Oracle và SQL độc lập; một tác vụ tắt/lỗi không chặn các tác vụ khác.
-        if g.get("api_enabled", True):
-            self.start_api_supervisor()
-        else:
-            self.api_log_put(f"[{now_hms()}] API disabled by runtime_config.json")
-
-        if g.get("sql_enabled", True):
-            self.start_sql_supervisor()
-        else:
-            self.sql_log_put(f"[{now_hms()}] SQL disabled by runtime_config.json")
-
-        self.running = True
+            self.log_put(f"[{now_hms()}] ORACLE START FAIL: Shared PLC hub is not available")
+            return
 
         if not g.get("oracle_enabled", True):
             self.log_put(f"[{now_hms()}] ORACLE disabled by runtime_config.json")
@@ -1739,6 +1956,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 except Exception:
                     pass
                 self.log_put(f"[{now_hms()}] ORACLE CONNECT FAIL: API vẫn chạy độc lập nếu cấu hình API đúng")
+                self._schedule_oracle_retry()
                 return
             self.set_table1_status('ok')
             self.log_put(f"[{now_hms()}] ORACLE CONNECTED: {g['oracle_dsn']}")
@@ -1746,6 +1964,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_table1_status('false')
             self.log_put(f"[{now_hms()}] ORACLE CONNECT FAIL: {e}")
             self.log_put(f"[{now_hms()}] ORACLE CONNECT FAIL: API vẫn chạy độc lập nếu cấu hình API đúng")
+            self._schedule_oracle_retry()
             return
         db.main_window = self
         self.db = db
@@ -1791,16 +2010,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self._connect_poll_seconds > 0:
             self._connect_next_run = datetime.now() + timedelta(seconds=self._connect_poll_seconds)
 
-        self._connect_ui_set_next_run()
-
-        self._connect_timer = QtCore.QTimer(self)
-        self._connect_timer.setInterval(1000)
-        self._connect_timer.timeout.connect(self._connect_tick)
-        self._connect_timer.start()
-
-        if not getattr(self, '_connect_inflight', False):
-            self._connect_inflight = True
-            threading.Thread(target=self._connect_job, daemon=True).start()
+        self.oracle_timer_signal.emit()
 
         # Table3 mới: giữ shared PLC, chỉ poll delta/raw
         self.table3_worker = Table3Worker(
@@ -1814,10 +2024,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.log_put(f"[{now_hms()}] Started {started} workers (auto-run).")
 
-    def stop_workers(self):
+    def stop_workers(self, stop_services: bool = True):
         if not self.threads:
             try:
-                if hasattr(self, '_connect_timer') and self._connect_timer is not None:
+                if (QtCore.QThread.currentThread() is self.thread() and
+                        hasattr(self, '_connect_timer') and self._connect_timer is not None):
                     self._connect_timer.stop()
             except Exception:
                 pass
@@ -1828,9 +2039,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             except Exception:
                 pass
             self.table3_worker = None
-            self.stop_api_supervisor()
-            self.stop_sql_supervisor()
-            if self.plc_hub is not None:
+            try:
+                if self.db is not None:
+                    self.db.core.close()
+            except Exception:
+                pass
+            self.db = None
+            if stop_services:
+                self.stop_api_supervisor()
+                self.stop_sql_supervisor()
+            if stop_services and self.plc_hub is not None:
                 self.plc_hub.stop()
                 self.plc_hub = None
             self.running = False
@@ -1840,14 +2058,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 t.stop()
             except Exception:
                 pass
+        join_deadline = time.monotonic() + 5.0
         for t in self.threads:
             try:
-                t.join()
+                remaining = max(0.0, join_deadline - time.monotonic())
+                if remaining <= 0:
+                    break
+                t.join(timeout=remaining)
             except Exception:
                 pass
 
         try:
-            if hasattr(self, '_connect_timer') and self._connect_timer is not None:
+            if (QtCore.QThread.currentThread() is self.thread() and
+                    hasattr(self, '_connect_timer') and self._connect_timer is not None):
                 self._connect_timer.stop()
         except Exception:
             pass
@@ -1863,14 +2086,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
         self.table3_worker = None
 
-        self.stop_api_supervisor()
-        self.stop_sql_supervisor()
+        if stop_services:
+            self.stop_api_supervisor()
+            self.stop_sql_supervisor()
 
-        if self.plc_hub is not None:
+        if stop_services and self.plc_hub is not None:
             self.plc_hub.stop()
             self.plc_hub = None
 
         self.threads = []
+        try:
+            if self.db is not None:
+                self.db.core.close()
+        except Exception:
+            pass
+        self.db = None
         self.running = False
         self.log_put(f"[{now_hms()}] Stopped all workers.")
 
@@ -1914,11 +2144,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.confirm_close()
             return
 
-        try:
-            if self.running:
-                self.stop_workers()
-        finally:
-            super().closeEvent(event)
+        super().closeEvent(event)
 
 
 # ───────── App bootstrap ─────────

@@ -22,6 +22,25 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet('font: 26pt "MS Serif";')
         self.root.addWidget(self.label)
 
+        # Bật/tắt từng dịch vụ độc lập; mặc định đều OFF.
+        self.service_row = QtWidgets.QHBoxLayout()
+        self.service_row.setSpacing(14)
+        self.service_row.addStretch(1)
+        self.chk_oracle = QtWidgets.QCheckBox(self.centralwidget)
+        self.chk_oracle.setObjectName("chk_oracle")
+        self.chk_oracle.setChecked(False)
+        self.service_row.addWidget(self.chk_oracle)
+        self.chk_api = QtWidgets.QCheckBox(self.centralwidget)
+        self.chk_api.setObjectName("chk_api")
+        self.chk_api.setChecked(False)
+        self.service_row.addWidget(self.chk_api)
+        self.chk_sql = QtWidgets.QCheckBox(self.centralwidget)
+        self.chk_sql.setObjectName("chk_sql")
+        self.chk_sql.setChecked(False)
+        self.service_row.addWidget(self.chk_sql)
+        self.service_row.addStretch(1)
+        self.root.addLayout(self.service_row)
+
         # log area: Oracle và API tách 2 tab độc lập
         self.log_tabs = QtWidgets.QTabWidget(self.centralwidget)
         self.log_tabs.setObjectName("log_tabs")
@@ -262,6 +281,9 @@ class Ui_MainWindow(object):
         _tr = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_tr("MainWindow", "PLC READER -> Oracle + API + SQL"))
         self.label.setText(_tr("MainWindow", "MACHINE STATUS PROGRAM"))
+        self.chk_oracle.setText(_tr("MainWindow", "Oracle: OFF"))
+        self.chk_api.setText(_tr("MainWindow", "API: OFF"))
+        self.chk_sql.setText(_tr("MainWindow", "SQL: OFF"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_oracle), _tr("MainWindow", "ORACLE LOG"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_api), _tr("MainWindow", "API LOG"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_sql), _tr("MainWindow", "SQL LOG"))

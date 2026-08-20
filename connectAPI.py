@@ -107,6 +107,9 @@ def _norm_run_addrs(value) -> List[str]:
 
 def _norm_d_bt_groups(value) -> List[List[str]]:
     """Chuẩn hóa D_BT thành danh sách combo, mỗi combo đúng 3 word register."""
+    if value is None:
+        return [list(group) for group in DEFAULT_D_BT_GROUPS]
+
     raw_groups = value if isinstance(value, (list, tuple)) else []
     result: List[List[str]] = []
     for raw_group in raw_groups:
@@ -115,7 +118,7 @@ def _norm_d_bt_groups(value) -> List[List[str]]:
         group = [_norm_addr(addr) for addr in raw_group]
         if all(_WORD_ADDR_RE.fullmatch(addr) for addr in group):
             result.append(group)
-    return result or [list(group) for group in DEFAULT_D_BT_GROUPS]
+    return result
 
 
 def parse_bit_addr(addr: str) -> Tuple[str, int]:
