@@ -1654,7 +1654,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             conn = core.pool.acquire()
             cur = conn.cursor()
             ts = datetime.now()
-            sql = f"INSERT INTO {self._connect_table} (LINE, DATETIME, STATUS, FACTORY) VALUES (:line, :dt, :st, :factory)"
+            sql = f"""
+                MERGE INTO {self._connect_table} target
+                USING (
+                    SELECT :line AS LINE,
+                           :dt AS DATETIME,
+                           :st AS STATUS,
+                           :factory AS FACTORY
+                      FROM DUAL
+                ) source
+                   ON (
+                       target.ID = (
+                           SELECT MAX(existing.ID)
+                             FROM {self._connect_table} existing
+                            WHERE existing.LINE = source.LINE
+                              AND (
+                                  existing.FACTORY = source.FACTORY
+                                  OR (existing.FACTORY IS NULL AND source.FACTORY IS NULL)
+                              )
+                       )
+                   )
+                 WHEN MATCHED THEN
+                      UPDATE SET target.DATETIME = source.DATETIME
+                 WHEN NOT MATCHED THEN
+                      INSERT (LINE, DATETIME, STATUS, FACTORY)
+                      VALUES (source.LINE, source.DATETIME, source.STATUS, source.FACTORY)
+            """
             binds = [{'line': ln, 'dt': ts, 'st': 'OK', 'factory': factory_by_line.get(ln)} for ln in lines]
             cur.executemany(sql, binds)
             conn.commit()
@@ -1662,7 +1687,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self._connect_push_error = False
             self.set_table2_status('ok')
             self._connect_ui_set_next_run()
-            self.log_put(f"[{now_hms()}] CONNECT: ghi {len(lines)} dòng vào {self._connect_table}")
+            self.log_put(f"[{now_hms()}] CONNECT: upsert {len(lines)} line vào {self._connect_table}")
 
         except Exception as e:
             msg = str(e)
