@@ -25,6 +25,7 @@
     "api_verify_ssl": false,
     "oracle_enabled": true,
     "sql_enabled": true,
+    "sql2_enabled": true,
     "api_enabled": true,
     "api_record_url": "https://10.224.222.195:1001/ws-sync-data/api/postMachineErrorRecord",
     "api_current_state_url": "https://10.224.222.195:1001/ws-sync-data/api/postMachineStatus",

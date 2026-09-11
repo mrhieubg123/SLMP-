@@ -38,6 +38,10 @@ class Ui_MainWindow(object):
         self.chk_sql.setObjectName("chk_sql")
         self.chk_sql.setChecked(False)
         self.service_row.addWidget(self.chk_sql)
+        self.chk_sql2 = QtWidgets.QCheckBox(self.centralwidget)
+        self.chk_sql2.setObjectName("chk_sql2")
+        self.chk_sql2.setChecked(False)
+        self.service_row.addWidget(self.chk_sql2)
         self.service_row.addStretch(1)
         self.root.addLayout(self.service_row)
 
@@ -74,6 +78,15 @@ class Ui_MainWindow(object):
         self.listWidget_sql.setObjectName("listWidget_sql")
         self.tab_sql_layout.addWidget(self.listWidget_sql)
         self.log_tabs.addTab(self.tab_sql, "")
+
+        self.tab_sql2 = QtWidgets.QWidget()
+        self.tab_sql2.setObjectName("tab_sql2")
+        self.tab_sql2_layout = QtWidgets.QVBoxLayout(self.tab_sql2)
+        self.tab_sql2_layout.setContentsMargins(0, 0, 0, 0)
+        self.listWidget_sql2 = QtWidgets.QListWidget(self.tab_sql2)
+        self.listWidget_sql2.setObjectName("listWidget_sql2")
+        self.tab_sql2_layout.addWidget(self.listWidget_sql2)
+        self.log_tabs.addTab(self.tab_sql2, "")
 
         self.root.addWidget(self.log_tabs, 1)
 
@@ -284,9 +297,11 @@ class Ui_MainWindow(object):
         self.chk_oracle.setText(_tr("MainWindow", "Oracle: OFF"))
         self.chk_api.setText(_tr("MainWindow", "API: OFF"))
         self.chk_sql.setText(_tr("MainWindow", "SQL: OFF"))
+        self.chk_sql2.setText(_tr("MainWindow", "SQL2: OFF"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_oracle), _tr("MainWindow", "ORACLE LOG"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_api), _tr("MainWindow", "API LOG"))
         self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_sql), _tr("MainWindow", "SQL LOG"))
+        self.log_tabs.setTabText(self.log_tabs.indexOf(self.tab_sql2), _tr("MainWindow", "SQL2 LOG"))
 
         self.btn_manual_reset.setText(_tr("MainWindow", "R"))
         self.btn_manual_reset.setToolTip(_tr("MainWindow", "Manual reset PASS/FAIL"))

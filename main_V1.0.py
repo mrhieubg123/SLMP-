@@ -38,6 +38,12 @@ except ModuleNotFoundError:
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     SqlSupervisor = importlib.import_module("connectSQL").SqlSupervisor
 
+try:
+    from connectSQLStatus import SqlStatusDB
+except ModuleNotFoundError:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    SqlStatusDB = importlib.import_module("connectSQLStatus").SqlStatusDB
+
 # === cấu hình đọc PLC ===
 USE_SMLP_ONE_SHOT = False  # ép dùng shared persistent session theo IP:PORT
 EXPECTED_LICENSE = "PTH-LOCK-HAI"
@@ -298,6 +304,8 @@ def load_machine_config(config5_path: str = None):
         "oracle_enabled": _as_bool(_get(rt_raw, "oracle_enabled", True), True),
         "api_enabled": _as_bool(_get(rt_raw, "api_enabled", True), True),
         "sql_enabled": _as_bool(_get(rt_raw, "sql_enabled", True), True),
+        "sql2_enabled": _as_bool(_get(rt_raw, "sql2_enabled", False), False),
+        "string_connect": _get(rt_raw, "string_connect"),
         "oracle_user": _get(rt_raw, "oracle_user"),
         "oracle_password": _get(rt_raw, "oracle_password"),
         "oracle_dsn": _get(rt_raw, "oracle_dsn"),
@@ -341,6 +349,7 @@ def load_service_enabled_config():
         "oracle": _as_bool(_get(rt_raw, "oracle_enabled", True), True),
         "api": _as_bool(_get(rt_raw, "api_enabled", True), True),
         "sql": _as_bool(_get(rt_raw, "sql_enabled", True), True),
+        "sql2": _as_bool(_get(rt_raw, "sql2_enabled", False), False),
     }
 
 
@@ -750,12 +759,13 @@ class MachineWorker(threading.Thread):
                  cut_clear_debounce: int,
                  log_put,
                  wait_entries: Optional[List[Dict[str, str]]] = None,
-                 wait_hold_secs: int = 30, plc_hub=None):
+                 wait_hold_secs: int = 30, plc_hub=None, service_label: str = "ORACLE"):
         super().__init__(daemon=True)
         self.db, self.m = db, m
         self.poll, self.debounce, self.reconn = poll, debounce, reconn_min
         self.timestop_slots = list(timestop_slots or [])
         self.log_put = log_put
+        self.service_label = service_label
 
         self.line_bits = {k.upper(): v for k, v in (line_bits or {}).items()}
         self.addr_line: List[str] = sorted(self.line_bits.keys(), key=_sort_addr) if self.line_bits else []
@@ -824,7 +834,7 @@ class MachineWorker(threading.Thread):
             msg = f"{status}" if not code else f"{status} → {code} - {label}"
             if reason:
                 msg += f" ({reason})"
-            self.log_put(f"[{now_hms()}] ORACLE {name}: {msg}")
+            self.log_put(f"[{now_hms()}] {self.service_label} {name}: {msg}")
             self.last_logged = key
 
     def _update_wait_hold(self, vals: Dict[str, bool]) -> Optional[Tuple[str, str]]:
@@ -914,9 +924,9 @@ class MachineWorker(threading.Thread):
                 if not self.plc.is_connected():
                     try:
                         self.plc.connect()
-                        self.log_put(f"[{now_hms()}] ORACLE {name}: CONNECTED {self.m['IP']}:{self.m['PORT']}")
+                        self.log_put(f"[{now_hms()}] {self.service_label} {name}: CONNECTED {self.m['IP']}:{self.m['PORT']}")
                     except Exception as ce:
-                        self.log_put(f"[{now_hms()}] ORACLE {name}: PLC/connect error: {ce}")
+                        self.log_put(f"[{now_hms()}] {self.service_label} {name}: PLC/connect error: {ce}")
                         decision = ("OFF", None, None)
                         if decision != self.last_decision:
                             self.last_decision = decision
@@ -1028,7 +1038,7 @@ class MachineWorker(threading.Thread):
                 time.sleep(self.poll)
 
             except Exception as e:
-                self.log_put(f"[{now_hms()}] ORACLE {name}: PLC/read error: {e}")
+                self.log_put(f"[{now_hms()}] {self.service_label} {name}: PLC/read error: {e}")
                 try:
                     self.plc.force_disconnect()
                 except Exception:
@@ -1324,6 +1334,107 @@ class Table3Worker(threading.Thread):
                 time.sleep(1)
 
 
+class Sql2DBAdapter:
+    """Adapter SQL Server có interface giống OracleDBAdapter cho MachineWorker."""
+    def __init__(self, string_connect: str, table_name: str, log_put):
+        self.core = SqlStatusDB(string_connect, table_name)
+        self.log_put = log_put
+
+    def test_connection(self):
+        try:
+            return (True, None) if self.core.test_connection() else (False, "SELECT 1 failed")
+        except Exception as exc:
+            return False, str(exc)
+
+    @staticmethod
+    def now_clock():
+        return datetime.now()
+
+    def upsert_status(self, line, loc, mtype, name, status, code, label,
+                      ts=None, category=None, factory=None):
+        cfg = {"Line": line, "Location": loc, "Machine_name": name,
+               "Type_machine": mtype, "Category": category, "FACTORY": factory}
+        ok = self.core.upsert_status(cfg, status, ts or datetime.now(), code, label)
+        if ok:
+            self.log_put(f"[{now_hms()}] SQL2 ↑DB {line}/{loc}/{category}/{name} → {status}" +
+                         (f" ({code} - {label})" if code else ""))
+        elif self.core.last_error:
+            self.log_put(f"[{now_hms()}] SQL2 ↑DB FAIL {line}/{loc}/{category}/{name}: {self.core.last_error}")
+
+
+class Sql2Service:
+    """Chạy song song logic Table1/Table2 của Oracle trên Microsoft SQL Server."""
+    def __init__(self, window, cfg, machines, line_bits, grouped, wait_by_mt):
+        self.window, self.cfg, self.machines = window, cfg, machines
+        self.line_bits, self.grouped, self.wait_by_mt = line_bits, grouped, wait_by_mt
+        self.workers = []
+        self.stop_ev = threading.Event()
+        self.heartbeat_thread = None
+        self.db = Sql2DBAdapter(cfg["string_connect"], cfg["table_name1"], window.sql2_log_put)
+        self.running = False
+
+    def start(self):
+        ok, msg = self.db.test_connection()
+        if not ok:
+            raise RuntimeError(msg)
+        for m in self.machines:
+            if str(m.get("STATUS", "True")).lower() != "true":
+                continue
+            mt = (m.get("MACHINE_TYPE") or "").strip()
+            worker = MachineWorker(
+                db=self.db, m=m, line_bits=self.line_bits,
+                err_entries=list(self.grouped.get(mt) or []),
+                poll=self.cfg["poll_interval_sec"], debounce=self.cfg["debounce_polls"],
+                reconn_min=self.cfg["reconnect_minutes"],
+                timestop_slots=self.cfg["timestop_slots"],
+                cut_clear_debounce=self.cfg["cut_clear_debounce"],
+                log_put=self.window.sql2_log_put,
+                wait_entries=list(self.wait_by_mt.get(mt) or []),
+                wait_hold_secs=self.cfg.get("wait_hold_secs", 30),
+                plc_hub=self.window.plc_hub, service_label="SQL2",
+            )
+            worker.start()
+            self.workers.append(worker)
+        self.running = True
+        self.heartbeat_thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
+        self.heartbeat_thread.start()
+        self.window.sql2_log_put(f"[{now_hms()}] SQL2 CONNECTED; started {len(self.workers)} worker(s)")
+
+    def _heartbeat_loop(self):
+        interval = max(1, int(self.cfg.get("poll_seconds", 600)))
+        while not self.stop_ev.is_set():
+            self._push_connect()
+            if self.stop_ev.wait(interval):
+                break
+
+    def _push_connect(self):
+        lines = sorted({str(m.get("Line")).strip() for m in self.machines if m.get("Line")})
+        factory_by_line = {}
+        for m in self.machines:
+            if m.get("Line") is not None:
+                factory_by_line.setdefault(str(m["Line"]).strip(), m.get("FACTORY"))
+        try:
+            self.db.core.upsert_connect(self.cfg["table_name2"], lines, factory_by_line)
+            self.window.sql2_log_put(
+                f"[{now_hms()}] SQL2 CONNECT: upsert {len(lines)} line vào {self.cfg['table_name2']}"
+            )
+        except Exception as exc:
+            self.window.sql2_log_put(f"[{now_hms()}] SQL2 CONNECT FAIL: {exc}")
+
+    def stop(self):
+        self.stop_ev.set()
+        for worker in self.workers:
+            worker.stop()
+        for worker in self.workers:
+            worker.join(timeout=2)
+        if self.heartbeat_thread:
+            self.heartbeat_thread.join(timeout=2)
+        self.db.core.close()
+        self.workers = []
+        self.running = False
+        self.window.sql2_log_put(f"[{now_hms()}] SQL2 stopped")
+
+
 # ───────── GUI ─────────
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     table_status_signal = QtCore.pyqtSignal(str, str)
@@ -1339,8 +1450,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.log_q: "queue.Queue[str]" = queue.Queue()
         self.api_log_q: "queue.Queue[str]" = queue.Queue()
         self.sql_log_q: "queue.Queue[str]" = queue.Queue()
+        self.sql2_log_q: "queue.Queue[str]" = queue.Queue()
         self.api_supervisor = None
         self.sql_supervisor = None
+        self.sql2_service = None
         # Tạo đúng một hub trước khi Oracle/API/SQL có thể khởi động. Mọi dịch vụ
         # phải dùng hub này để mỗi IP:PORT chỉ có một kết nối và một snapshot PLC.
         try:
@@ -1374,6 +1487,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.chk_oracle.toggled.connect(self._toggle_oracle)
         self.chk_api.toggled.connect(self._toggle_api)
         self.chk_sql.toggled.connect(self._toggle_sql)
+        self.chk_sql2.toggled.connect(self._toggle_sql2)
 
         if hasattr(self, "save_3"):
             self.save_3.clicked.connect(self.on_setting_clicked)
@@ -1404,12 +1518,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             enabled_config = load_service_enabled_config()
         except Exception as exc:
             self.log_put(f"[{now_hms()}] CONFIG FAIL: Không đọc được trạng thái dịch vụ: {exc}")
-            enabled_config = {"oracle": False, "api": False, "sql": False}
+            enabled_config = {"oracle": False, "api": False, "sql": False, "sql2": False}
 
         switches = (
             (self.chk_oracle, "Oracle", enabled_config["oracle"]),
             (self.chk_api, "API", enabled_config["api"]),
             (self.chk_sql, "SQL", enabled_config["sql"]),
+            (self.chk_sql2, "SQL2", enabled_config["sql2"]),
         )
         for widget, name, enabled in switches:
             self._set_switch_text(widget, name, enabled)
@@ -1432,6 +1547,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def sql_log_put(self, msg: str):
         try:
             self.sql_log_q.put_nowait(msg)
+        except Exception:
+            pass
+
+    def sql2_log_put(self, msg: str):
+        try:
+            self.sql2_log_q.put_nowait(msg)
         except Exception:
             pass
 
@@ -1526,6 +1647,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if sql_drained and sql_list is not None:
             sql_list.scrollToBottom()
+
+        sql2_list = getattr(self, "listWidget_sql2", None)
+        sql2_logs = []
+        for _ in range(max_logs_per_tick):
+            try:
+                msg = self.sql2_log_q.get_nowait()
+            except queue.Empty:
+                break
+            if sql2_list is not None:
+                sql2_list.addItem(msg)
+                if sql2_list.count() > 500:
+                    sql2_list.takeItem(0)
+            sql2_logs.append(msg)
+        if sql2_logs:
+            try:
+                log_dir = res_path(os.path.join("logs", datetime.now().strftime("%Y-%m-%d")))
+                os.makedirs(log_dir, exist_ok=True)
+                with open(os.path.join(log_dir, "log_sql2.txt"), "a", encoding="utf-8") as f:
+                    for line in sql2_logs:
+                        f.write(line + "\n")
+            except Exception as exc:
+                print(f"Error writing to log_sql2: {exc}")
+            if sql2_list is not None:
+                sql2_list.scrollToBottom()
 
     def _apply_table_status(self, which: str, value: str):
         if which == "table1":
@@ -1756,6 +1901,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except Exception as e:
             self.sql_log_put(f"[{now_hms()}] SQL START FAIL: {e}")
 
+    def start_sql2_service(self):
+        if self.sql2_service is not None and self.sql2_service.running:
+            return
+        if self.plc_hub is None:
+            raise RuntimeError("Shared PLC hub is not available")
+        g, machines = load_machine_config()
+        if not g.get("sql2_enabled", False):
+            self.sql2_log_put(f"[{now_hms()}] SQL2 disabled by runtime_config.json")
+            return
+        if not g.get("string_connect"):
+            raise RuntimeError("thiếu string_connect trong runtime_config.json")
+        line_bits, grouped, wait_by_mt = load_error_catalog_grouped(res_path("config_group.json"))
+        service = Sql2Service(self, g, machines, line_bits, grouped, wait_by_mt)
+        service.start()
+        self.sql2_service = service
+
+    def stop_sql2_service(self):
+        try:
+            if self.sql2_service is not None:
+                self.sql2_service.stop()
+        except Exception as exc:
+            self.sql2_log_put(f"[{now_hms()}] SQL2 STOP FAIL: {exc}")
+        self.sql2_service = None
+
     @staticmethod
     def _set_switch_text(widget, name: str, enabled: bool):
         widget.setText(f"{name}: {'ON' if enabled else 'OFF'}")
@@ -1765,6 +1934,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             "Oracle": self.chk_oracle,
             "API": self.chk_api,
             "SQL": self.chk_sql,
+            "SQL2": self.chk_sql2,
         }[service]
         widget.blockSignals(True)
         widget.setChecked(enabled)
@@ -1790,18 +1960,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.stop_api_supervisor()
                 result = bool(enabled and self.api_supervisor and
                               getattr(self.api_supervisor, "running", False))
-            else:
+            elif service == "SQL":
                 if enabled:
                     self.start_sql_supervisor()
                 else:
                     self.stop_sql_supervisor()
                 result = bool(enabled and self.sql_supervisor and
                               getattr(self.sql_supervisor, "running", False))
+            else:
+                if enabled:
+                    self.start_sql2_service()
+                else:
+                    self.stop_sql2_service()
+                result = bool(enabled and self.sql2_service and self.sql2_service.running)
         except Exception as exc:
             result = False
-            log = self.log_put if service == "Oracle" else (
-                self.api_log_put if service == "API" else self.sql_log_put
-            )
+            log = {"Oracle": self.log_put, "API": self.api_log_put,
+                   "SQL": self.sql_log_put, "SQL2": self.sql2_log_put}[service]
             log(f"[{now_hms()}] {service.upper()} SWITCH FAIL: {exc}")
         self.service_result_signal.emit(service, result)
 
@@ -1835,6 +2010,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.chk_sql.setEnabled(False)
         threading.Thread(
             target=self._run_service_action, args=("SQL", enabled), daemon=True
+        ).start()
+
+    def _toggle_sql2(self, enabled: bool):
+        self._set_switch_text(self.chk_sql2, "SQL2", enabled)
+        self.chk_sql2.setEnabled(False)
+        threading.Thread(
+            target=self._run_service_action, args=("SQL2", enabled), daemon=True
         ).start()
 
     def stop_sql_supervisor(self):
@@ -2073,6 +2255,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if stop_services:
                 self.stop_api_supervisor()
                 self.stop_sql_supervisor()
+                self.stop_sql2_service()
             if stop_services and self.plc_hub is not None:
                 self.plc_hub.stop()
                 self.plc_hub = None
@@ -2114,6 +2297,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if stop_services:
             self.stop_api_supervisor()
             self.stop_sql_supervisor()
+            self.stop_sql2_service()
 
         if stop_services and self.plc_hub is not None:
             self.plc_hub.stop()
