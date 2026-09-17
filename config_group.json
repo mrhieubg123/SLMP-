@@ -1599,5 +1599,455 @@
       "error": "[L7164] Kiểm tra tay gắp 4",
       "bit": "M7164"
     }
+  },
+  "RB GEN4 PCBA": {
+    "E0002": {
+      "error": "Lỗi check camera",
+      "bit": "M259"
+    },
+    "E0434": {
+      "error": "Robot đang dừng( STOP)",
+      "bit": "M288"
+    },
+    "E0435": {
+      "error": "Đang ấn nút Stop (EMG)",
+      "bit": "M260"
+    },
+    "E0436": {
+      "error": "Hết tray liệu input 1",
+      "bit": "M277"
+    },
+    "E0537": {
+      "error": "Hết tray liệu input 2",
+      "bit": "M278"
+    },
+    "E0437": {
+      "error": "Đầy tray liệu output",
+      "bit": "M280"
+    },
+    "E0438": {
+      "error": "Đầy băng tải Fail_BT1",
+      "bit": "M268"
+    },
+    "E0439": {
+      "error": "Chế độ bằng tay đang ON",
+      "bit": "L0"
+    },
+    "E0440": {
+      "error": "Tạm dừng máy",
+      "bit": "L411"
+    },
+    "E0441": {
+      "error": "Lỗi hút bản xylanh 1",
+      "bit": "M250"
+    },
+    "E0442": {
+      "error": "Lỗi hút bản xylanh 2",
+      "bit": "M251"
+    },
+    "E0005": {
+      "error": "Lỗi hút bản xylanh 3",
+      "bit": "M252"
+    },
+    "E0443": {
+      "error": "Lỗi hút bản xylanh 4",
+      "bit": "M253"
+    },
+    "E0444": {
+      "error": "Quá thời gian test khuôn 1",
+      "bit": "M341"
+    },
+    "E0445": {
+      "error": "Quá thời gian test khuôn 2",
+      "bit": "M342"
+    },
+    "E0446": {
+      "error": "Quá thời gian test khuôn 3",
+      "bit": "M343"
+    },
+    "E0447": {
+      "error": "Quá thời gian test khuôn 4",
+      "bit": "M344"
+    },
+    "E0448": {
+      "error": "Quá thời gian test khuôn 5",
+      "bit": "M345"
+    },
+    "E0449": {
+      "error": "Đang mở cửa khuôn 1",
+      "bit": "M4071"
+    },
+    "E0450": {
+      "error": "Đang mở cửa khuôn 2",
+      "bit": "M4072"
+    },
+    "E0451": {
+      "error": "Đang mở cửa khuôn 3",
+      "bit": "M4073"
+    },
+    "E0452": {
+      "error": "Đang mở cửa khuôn 4",
+      "bit": "M4074"
+    },
+    "E0453": {
+      "error": "Đang mở cửa khuôn 5",
+      "bit": "M4075"
+    },
+    "E0454": {
+      "error": "Đang mở cửa khuôn 6",
+      "bit": "M4076"
+    },
+    "E0455": {
+      "error": "[S1] Băng tải thu tray 1 lỗi",
+      "bit": "M351"
+    },
+    "E0456": {
+      "error": "[S1] Băng tải cấp tray gắp lỗi",
+      "bit": "M352"
+    },
+    "E0457": {
+      "error": "[S1] Băng tải thu tray 2 lỗi",
+      "bit": "M353"
+    },
+    "E0458": {
+      "error": "[S2] Băng tải tray gắp lỗi",
+      "bit": "M354"
+    },
+    "E0459": {
+      "error": "[S2] Băng tải tray thả lỗi",
+      "bit": "M355"
+    },
+    "E0012": {
+      "error": "Mất áp suất tay 1",
+      "bit": "M401"
+    },
+    "E0013": {
+      "error": "Mất áp suất tay 2",
+      "bit": "M402"
+    },
+    "E0014": {
+      "error": "Mất áp suất tay 3",
+      "bit": "M403"
+    },
+    "E0015": {
+      "error": "Mất áp suất tay 4",
+      "bit": "M404"
+    },
+    "E0460": {
+      "error": "Đầy bản Fail_BT2",
+      "bit": "M272"
+    },
+    "E0461": {
+      "error": "Kiểm tra cảm biến xi lanh min tay hút 1",
+      "bit": "M411"
+    },
+    "E0462": {
+      "error": "Kiểm tra cảm biến xi lanh min tay hút 2",
+      "bit": "M412"
+    },
+    "E0463": {
+      "error": "Kiểm tra cảm biến xi lanh min tay hút 3",
+      "bit": "M413"
+    },
+    "E0464": {
+      "error": "Kiểm tra cảm biến xi lanh min tay hút 4",
+      "bit": "M414"
+    },
+    "E0465": {
+      "error": "Kiểm tra cảm biến xi lanh max tay hút 1",
+      "bit": "M421"
+    },
+    "E0466": {
+      "error": "Kiểm tra cảm biến xi lanh max tay hút 2",
+      "bit": "M422"
+    },
+    "E0467": {
+      "error": "Kiểm tra cảm biến xi lanh max tay hút 3",
+      "bit": "M423"
+    },
+    "E0468": {
+      "error": "Kiểm tra cảm biến xi lanh max tay hút 4",
+      "bit": "M424"
+    },
+    "E0469": {
+      "error": "Tạm dừng khuôn 1",
+      "bit": "L151"
+    },
+    "E0470": {
+      "error": "Tạm dừng khuôn 2",
+      "bit": "L152"
+    },
+    "E0471": {
+      "error": "Tạm dừng khuôn 3",
+      "bit": "L153"
+    },
+    "E0472": {
+      "error": "Tạm dừng khuôn 4",
+      "bit": "L154"
+    },
+    "E0473": {
+      "error": "Tạm dừng khuôn 5",
+      "bit": "L155"
+    },
+    "E0474": {
+      "error": "Chờ xác nhận e_STOP RB",
+      "bit": "M3000"
+    },
+    "E0475": {
+      "error": "Kiểm tra khuôn test 1",
+      "bit": "M341"
+    },
+    "E0476": {
+      "error": "Tạm dừng khuôn 6",
+      "bit": "L156"
+    },
+    "E0477": {
+      "error": "Tạm dừng khuôn 7",
+      "bit": "L157"
+    },
+    "E0478": {
+      "error": "Tạm dừng khuôn 8",
+      "bit": "L158"
+    },
+    "E0479": {
+      "error": "Quá thời gian test khuôn 6",
+      "bit": "M346"
+    },
+    "E0480": {
+      "error": "Quá thời gian test khuôn 7",
+      "bit": "M347"
+    },
+    "E0481": {
+      "error": "Quá thời gian test khuôn 8",
+      "bit": "M348"
+    },
+    "E0482": {
+      "error": "Đang mở cửa khuôn 7",
+      "bit": "M4077"
+    },
+    "E0483": {
+      "error": "Đang mở cửa khuôn 8",
+      "bit": "M4078"
+    },
+    "E0484": {
+      "error": "[S3] Băng tải cấp tray thả lỗi",
+      "bit": "M356"
+    },
+    "E0485": {
+      "error": "[S3] Băng tải thu tray 1 lỗi",
+      "bit": "M357"
+    },
+    "E0486": {
+      "error": "[S3] Băng tải thu tray 2 lỗi",
+      "bit": "M358"
+    },
+    "E0487": {
+      "error": "[S1] Băng tải hồi tray 1 lỗi",
+      "bit": "M380"
+    },
+    "E0538": {
+      "error": "[S1] Băng tải hồi tray 1 lỗi 2",
+      "bit": "M386"
+    },
+    "E0488": {
+      "error": "[S1] Băng tải hồi tray 2 lỗi",
+      "bit": "M381"
+    },
+    "E0489": {
+      "error": "[S2] Băng tải hồi tray 1 lỗi",
+      "bit": "M382"
+    },
+    "E0490": {
+      "error": "[S2] Băng tải hồi tray 2 lỗi",
+      "bit": "M383"
+    },
+    "E0491": {
+      "error": "[S3] Băng tải hồi tray 2 lỗi",
+      "bit": "M384"
+    },
+    "E0492": {
+      "error": "[S4] Băng tải chuyển làn lỗi",
+      "bit": "M385"
+    },
+    "E0493": {
+      "error": "Đang mở cửa",
+      "bit": "M258"
+    },
+    "E0494": {
+      "error": "[S1] Lỗi cảm biến XL BT nâng-thu",
+      "bit": "M293"
+    },
+    "E0495": {
+      "error": "[S1] lỗi CB XL nâng-tách",
+      "bit": "M294"
+    },
+    "E0496": {
+      "error": "[S1] lỗi CB XL tách",
+      "bit": "M295"
+    },
+    "E0539": {
+      "error": "[S1] lỗi CB XL tách 2",
+      "bit": "M297"
+    },
+    "E0497": {
+      "error": "[S3] lỗi CB XL nâng-tách",
+      "bit": "M296"
+    },
+    "E0498": {
+      "error": "[S2] Lỗi CB XL nâng BT tray gắp",
+      "bit": "M298"
+    },
+    "E0499": {
+      "error": "[S2] Lỗi CB XL nâng BT tray thả",
+      "bit": "M299"
+    },
+    "E0500": {
+      "error": "lỗi khuôn",
+      "bit": "M292"
+    },
+    "E0501": {
+      "error": "Lỗi cảm biến khuôn",
+      "bit": "M291"
+    },
+    "E0502": {
+      "error": "Đầy băng tải Fail R5_BT1",
+      "bit": "M276"
+    },
+    "E0503": {
+      "error": "Tạm dừng khuôn 9",
+      "bit": "L159"
+    },
+    "E0504": {
+      "error": "Tạm dừng khuôn 10",
+      "bit": "L160"
+    },
+    "E0505": {
+      "error": "Tạm dừng khuôn 11",
+      "bit": "L161"
+    },
+    "E0506": {
+      "error": "Tạm dừng khuôn 12",
+      "bit": "L162"
+    },
+    "E0507": {
+      "error": "Quá thời gian test khuôn 9",
+      "bit": "M349"
+    },
+    "E0508": {
+      "error": "Quá thời gian test khuôn 10",
+      "bit": "M350"
+    },
+    "E0509": {
+      "error": "Quá thời gian test khuôn 12",
+      "bit": "M340"
+    },
+    "E0510": {
+      "error": "Quá thời gian test khuôn 11",
+      "bit": "M339"
+    },
+    "E0511": {
+      "error": "Lỗi tay (bỏ bản trên tay)",
+      "bit": "M56"
+    },
+    "E0512": {
+      "error": "Lỗi check camera (timer out)",
+      "bit": "M261"
+    },
+    "E0513": {
+      "error": "Lỗi không có khuôn dảnh để thả( bỏ bản trên tay)",
+      "bit": "L351"
+    },
+    "E0514": {
+      "error": "Send TE K1",
+      "bit": "L181"
+    },
+    "E0515": {
+      "error": "Send TE K2",
+      "bit": "L182"
+    },
+    "E0516": {
+      "error": "Send TE K3",
+      "bit": "L183"
+    },
+    "E0517": {
+      "error": "Send TE K4",
+      "bit": "L184"
+    },
+    "E0518": {
+      "error": "Send TE K5",
+      "bit": "L185"
+    },
+    "E0519": {
+      "error": "Send TE K6",
+      "bit": "L186"
+    },
+    "E0520": {
+      "error": "Send TE K7",
+      "bit": "L187"
+    },
+    "E0521": {
+      "error": "Send TE K8",
+      "bit": "L188"
+    },
+    "E0522": {
+      "error": "Send TE K9",
+      "bit": "L189"
+    },
+    "E0523": {
+      "error": "Send TE KA",
+      "bit": "L190"
+    },
+    "E0524": {
+      "error": "Send TE KB",
+      "bit": "L191"
+    },
+    "E0525": {
+      "error": "Send TE KC",
+      "bit": "L192"
+    },
+    "E0526": {
+      "error": "Lỗi thả tray PASS ( bỏ tray PASS)",
+      "bit": "M578"
+    },
+    "E0527": {
+      "error": "Lỗi thả tray RETEST ( lay va rst  ban tray RETEST)",
+      "bit": "M577"
+    },
+    "E0528": {
+      "error": "Đang mở cửa khuôn 9",
+      "bit": "M4065"
+    },
+    "E0529": {
+      "error": "Send TE Bang Tay",
+      "bit": "S500"
+    },
+    "E0530": {
+      "error": "Kiểm tra CB XL cố định tray cấp bản",
+      "bit": "M450"
+    },
+    "E0531": {
+      "error": "Kiểm tra CB XL cố định tray thả bản",
+      "bit": "M451"
+    },
+    "E0532": {
+      "error": "Đang mở cửa từ",
+      "bit": "L404"
+    },
+    "E0533": {
+      "error": "Đang mở cửa khuôn 10",
+      "bit": "M4066"
+    },
+    "E0534": {
+      "error": "Đang mở cửa khuôn 11",
+      "bit": "M4067"
+    },
+    "E0535": {
+      "error": "Đang mở cửa khuôn 12",
+      "bit": "M4068"
+    },
+    "E0536": {
+      "error": "Lỗi sensor SERVO trên (về gốc lại Servo)",
+      "bit": "S150"
+    }
   }
 }
